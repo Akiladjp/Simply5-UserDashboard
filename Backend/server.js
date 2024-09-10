@@ -13,6 +13,7 @@ import add_cart from "./APIfiles/addcart/addcart.js";
 import order_button from "./APIfiles/orderButton/orderButton.js";
 import subcategory from "./APIfiles/subCategory/subCategory.js"
 import rating from "./APIfiles/rating/rating.js"
+import billSection from "./APIfiles/billSection/billSection.js";
 const app = express();
 const PORT = process.env.PORT || 8082;
 
@@ -45,7 +46,8 @@ app.use("/", popupitems);
 app.use("/", add_cart);
 app.use("/", order_button);
 app.use("/", subcategory);
-app.use('/',rating)
+app.use('/',rating);
+app.use('/', billSection);
 
 app.listen(PORT, '0.0.0.0', () => {
   console.log(`Server is running on port ,${PORT}`);
