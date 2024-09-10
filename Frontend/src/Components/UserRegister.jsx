@@ -1,0 +1,124 @@
+import { useEffect, useState } from "react";
+import Logo from "../assets/Images/logo.png";
+import { FaPhoneAlt, FaUser } from "react-icons/fa";
+import { IoMdArrowRoundBack } from "react-icons/io";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
+// AnotherFile.js
+
+
+import "react-phone-input-2/lib/style.css";
+import {
+  
+  selectUsername,
+  setUservalue
+} from "../Redux/Slices/AuthSlice";
+import { useDispatch, useSelector } from "react-redux";
+
+const Login = () => {
+  const dispatch = useDispatch();
+  const username = useSelector(selectUsername);
+const navigate = useNavigate()
+useEffect(()=>{
+  if(username){
+    navigate("/")
+  }
+},[])
+  
+  const API_URL = import.meta.env.VITE_API_URL;
+  const [values, setValues] = useState({
+    name: "",
+    phoneNo: "",
+  });
+
+  
+
+  const validatePhoneNumber = (phoneNo) => {
+    const phoneRegex = /^\d{10}$/;
+    return phoneRegex.test(phoneNo);
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    if (!validatePhoneNumber(values.phoneNo)) {
+      alert("Phone number must contain exactly 10 digits.");
+      return;
+    }
+
+    axios
+      .post(`${API_URL}/userlogin`, values)
+      .then(() => {
+        alert("Regestraion successful");
+       console.log(values)
+       dispatch(setUservalue({ username: values.name, mobileno: values.phoneNo }));
+       
+        navigate("/");
+      })
+      .catch((err) => console.log(err));
+  };
+ 
+    return (
+      <div className="w-full h-screen">
+        <Link to="/cart">
+          
+        </Link>
+
+        <div className="flex mx-auto mt-16 w-60">
+          <img src={Logo} alt="" />
+        </div>
+        <div className="flex justify-center w-[260px] mx-auto">
+          <form onSubmit={handleSubmit} method="post">
+            <div className="flex border-b-[2px] mb-8 h-10">
+              <FaUser className="my-auto ml-2" />
+              <input
+                className=" w-[260px] ml-6 outline-none"
+                type="text"
+                name="username"
+                required
+                id="username"
+                placeholder="Full name"
+                onChange={(e) => setValues({ ...values, name: e.target.value })}
+              />
+            </div>
+            <div className="flex border-b-[2px] mb-8 h-10">
+              <FaPhoneAlt className="my-auto ml-2" />
+              <input
+                className=" w-[260px] ml-6 outline-none"
+                type="text"
+                name="phone"
+                id="phone"
+                required
+                placeholder="Phone Number"
+                onChange={(e) =>
+                  setValues({ ...values, phoneNo: e.target.value })
+                }
+              />
+            </div>
+            <div>
+              <input
+                className=" w-[310px] mb-8 font-bold h-10 rounded-2xl mt-2 bg-[#FED991] shadow-md"
+                type="submit"
+                name="submit"
+                id="submit"
+                value="REGISTER"
+              />
+            </div>
+          </form>
+        </div>
+        <div>
+          <p className="text-[6px] md:text-[8px] flex justify-center">
+            By signing in or creating an account, you are agree with our&nbsp;
+            <span className="text-blue-600">Terms & conditions </span>{" "}
+            &nbsp;and&nbsp;{" "}
+            <span className="text-blue-600"> Privacy statement</span>
+          </p>
+
+          <p className="text-[6px] flex justify-center">All Rights Reserved </p>
+        </div>
+      </div>
+    );
+  
+};
+
+export default Login;
