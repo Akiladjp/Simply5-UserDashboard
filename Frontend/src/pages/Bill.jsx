@@ -134,7 +134,7 @@ const Bill = () => {
                 colSpan="3"
                 className="px-6 py-4 text-right text-gray-800 font-semibold"
               >
-                Price:
+                Order Price:
               </td>
               <td className="px-6 py-4 text-gray-800 font-semibold">
                 {/* Convert values to numbers and calculate the total */}
