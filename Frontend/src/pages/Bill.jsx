@@ -121,12 +121,38 @@ const Bill = () => {
                 <td className="px-6 py-4 text-gray-800">{data.name}</td>
                 <td className="px-6 py-4 text-gray-800">{data.price}</td>
                 <td className="px-6 py-4 text-gray-800">{data.quantity}</td>
-                <td className="px-6 py-4 text-gray-800">{data.price * data.quantity}</td>
+                <td className="px-6 py-4 text-gray-800">
+                  {data.price * data.quantity}
+                </td>
               </tr>
             ))}
           </tbody>
           {/* Total Price Row */}
           <tfoot>
+            <tr className="bg-gray-100">
+              <td
+                colSpan="3"
+                className="px-6 py-4 text-right text-gray-800 font-semibold"
+              >
+                Price:
+              </td>
+              <td className="px-6 py-4 text-gray-800 font-semibold">
+                {/* Convert values to numbers and calculate the total */}
+                <p>{(billDataOrder.total - billDataOrder.total*10/11) * 10}</p>
+              </td>
+            </tr>
+            <tr className="bg-gray-100">
+              <td
+                colSpan="3"
+                className="px-6 py-4 text-right text-gray-800 font-semibold"
+              >
+                Service Charge:
+              </td>
+              <td className="px-6 py-4 text-gray-800 font-semibold">
+                {/* Convert values to numbers and calculate the total */}
+                <p>{billDataOrder.total - billDataOrder.total*10/11}</p>
+              </td>
+            </tr>
             <tr className="bg-gray-100">
               <td
                 colSpan="3"
