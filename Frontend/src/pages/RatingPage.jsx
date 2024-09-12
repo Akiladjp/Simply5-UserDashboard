@@ -4,13 +4,15 @@ import Rating from "../Components/rating/Rating";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import { selectMobileno } from "../Redux/Slices/AuthSlice";
+import { useParams } from "react-router-dom";
 
 
 const RatingPage = () => {
   const API_URL = import.meta.env.VITE_API_URL;
   const mobile_no = useSelector(selectMobileno);
-  const order_id = 2;
-  //console.log(" in rating page:", mobile_no);
+
+  const {order_id} = useParams();
+  console.log(" in rating page:", order_id);
 
   const [itemDetails, setItemDeails] = useState([]);
   useEffect(() => {
