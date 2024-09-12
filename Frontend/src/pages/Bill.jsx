@@ -174,7 +174,7 @@ const Bill = () => {
         <h3 className="text-lg font-bold text-gray-800 mb-4">
           Give your valuable feedback
         </h3>
-        <Link to="/ratingpage">
+        <Link to={`/ratingpage/${billDataOrder["billNo"]}`}>
           <button className="bg-red-600 hover:bg-red-700 text-white font-semibold rounded-lg py-2 px-8 shadow-md transition-transform transform hover:scale-105">
             Click Here
           </button>
