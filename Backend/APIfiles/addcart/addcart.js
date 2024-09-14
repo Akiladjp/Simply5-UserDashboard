@@ -25,16 +25,19 @@ add_cart.get("/get_qaun_item", (req, res) => {
 	} catch (err) {}
 });
 
-add_cart.get("/get_totalPrice", (req, res) => {
+add_cart.get("/get_totalPrice/:mobileno", (req, res) => {
 	var totalPrice = 0;
+	const mobileno = req.params.mobileno;
+	console.log("in addcart ",mobileno)
 	try {
-		const sql = "SELECT * FROM add_cart";
-		db.query(sql, (err, result) => {
+		const sql = "SELECT * FROM add_cart WHERE `mobileno` =?";
+		db.query(sql,[mobileno], (err, result) => {
 			if (err) {
 				console.log(err);
 				return res.json({ message: "error" });
 			} else if (result.length === 0) {
 				return res.json({ message: "nodata" });
+
 			} else {
 				const quantities = result.map((item) => item.quantity);
 
@@ -55,6 +58,7 @@ add_cart.get("/get_totalPrice", (req, res) => {
 						completedQueries++;
 
 						if (completedQueries === quantities.length) {
+							console.log(count);
 							return res.json({ totalPrice,count, message: "success" });
 						}
 					});

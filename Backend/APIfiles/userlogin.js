@@ -14,7 +14,8 @@ userlogin.post("/userlogin", (req, res) => {
         return res.json(err);
       }
       if (result.length > 0) {
-        return res.json(result);
+        return res.json({message:"already",result:result})
+       
       } 
       else {
         const insertSql = "INSERT INTO user(`name`,`phoneNo`) VALUES(?,?)";

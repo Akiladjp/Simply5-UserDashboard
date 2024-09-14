@@ -24,6 +24,7 @@ import {
 	selectCheckCount,
 	selectQuantityCount,
 } from "../Redux/Slices/QuantityCountSlice";
+import { selectMobileno } from "../Redux/Slices/AuthSlice";
 
 export default function Header() {
 	const API_URL = import.meta.env.VITE_API_URL;
@@ -43,6 +44,7 @@ export default function Header() {
 	const quanityCount = useSelector(selectQuantityCount);
 	const checkCount = useSelector(selectCheckCount);
 	const addbutton = useSelector(selectButtonState);
+	const mobileno = useSelector(selectMobileno);
 	useEffect(() => {
 		function handleClickedOutSise(event) {
 			//selectMenuButtonState(true);
@@ -90,7 +92,7 @@ export default function Header() {
 	useEffect(() => {
 		const fetchData = async () => {
 			try {
-				const response = await axios.get(`${API_URL}/get_totalPrice`);
+				const response = await axios.get(`${API_URL}/get_totalPrice/${mobileno}`);
 
 				if (response.data.message === "success") {
 					dispatch(setItemCount(response.data.count));
