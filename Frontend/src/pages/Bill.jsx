@@ -38,7 +38,7 @@ const Bill = () => {
 
   const [itemInfo, setItemInfo] = useState([]);
 
-  console.log("Order info is", itemInfo[0]);
+  // console.log("Order info is", itemInfo[0]);
   console.log("Bill ID is: ", billDataOrder.billNo);
 
   useEffect(() => {
@@ -58,7 +58,7 @@ const Bill = () => {
 
           setItemInfo(response.data);
 
-          console.log(response);
+         
         } else {
           console.log("Error in query");
         }

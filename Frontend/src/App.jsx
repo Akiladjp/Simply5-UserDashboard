@@ -21,6 +21,7 @@ import RatingPage from "./pages/RatingPage";
 import Rating from "./Components/rating/Rating";
 import { selectUsername } from "./Redux/Slices/AuthSlice";
 import SubCategoryItem from "./Components/SubCategoruItem";
+import PreFeedback from "./pages/PreFeedback";
 const Layout = () => {
 	const username = useSelector(selectUsername);
 	const buttonState = useSelector(selectButtonState);
@@ -31,7 +32,7 @@ const Layout = () => {
 	}
 
 	return (
-		<div className="flex flex-col h-screen bg-white lg:w-[60%] lg:left-[20%] lg:right-[20%] lg:absolute">
+		<div className="flex flex-col h-screen  overflow-hidden lg:w-[60%] lg:left-[20%] lg:right-[20%] lg:absolute">
 			<div className="absolute z-10">
 				<Header />
 			</div>
@@ -39,7 +40,7 @@ const Layout = () => {
 				className={`${
 					categoryAppearance
 						? "blur-sm lg:w-[60%] fixed z-0"
-						: "w-full absolute h-screen z-0"
+						: "w-full absolute h-screen z-0 overflow-scroll "
 				} ${
 					buttonState
 						? "blur-0 h-screen w-full overflow-hidden"
@@ -72,6 +73,7 @@ const router = createBrowserRouter([
 	},
 
 	{ path: "/login", element: <Login /> },
+	{ path: "/give-you-feedback", element: <PreFeedback /> },
 	{ path: "/itemcart", element: <ItemCart /> },
 	{ path: "/test", element: <Testimage /> },
 	{ path: "/rating", element: <Rating /> },

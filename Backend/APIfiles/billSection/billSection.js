@@ -27,7 +27,7 @@ billSection.get("/billSection/:mobileno", (req, res) => {
         o.mobileNo = ?;
     `;
 
-  console.log("Mobile number is ", mobileno);
+  console.log("Mobile number is in bill section", mobileno);
 
   db.query(sql1, [mobileno], (err, result) => {
     if (err) {
@@ -35,7 +35,7 @@ billSection.get("/billSection/:mobileno", (req, res) => {
       return res.status(500).json({ message: "Error in billSection" });
     } else {
       if (result.length > 0) {
-        console.log(result);
+       
         return res.json(result);
       } else {
         console.log("No orders found for this mobile number.");
