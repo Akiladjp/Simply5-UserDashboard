@@ -48,7 +48,7 @@ const Login = () => {
 			);
 			if (response.data.message === "already") {
 				navigate("/give-you-feedback");
-				toastr.success("Welcome Again", { timeout: 300 });
+				toastr.success("Welcome Back", { timeout: 300 });
 			} else {
 				navigate("/");
 				toastr.success("Welcome ", { timeout: 300 });

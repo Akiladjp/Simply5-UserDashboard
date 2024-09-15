@@ -71,7 +71,7 @@ const Rating = (props) => {
 
 	return (
 		<>
-			<div className="flex justify-center w-full scale-90 md:scale-100 flex-col">
+			<div className=" justify-center w-full scale-90 md:scale-100 flex-col">
 				<div
 					className={`${
 						isDone
@@ -82,7 +82,7 @@ const Rating = (props) => {
 						<img
 							src={props.imageUrl}
 							alt=""
-							className="h-[200px] rounded-l-lg"
+							className="h-[200px] rounded-l-lg object-cover bg-center w-full"
 						/>
 					</div>
 					<div className="w-[200px] h-[200px] flex flex-col gap-4 m-4">
