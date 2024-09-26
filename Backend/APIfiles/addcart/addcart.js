@@ -28,41 +28,48 @@ add_cart.get("/get_qaun_item", (req, res) => {
 add_cart.get("/get_totalPrice/:mobileno", (req, res) => {
 	var totalPrice = 0;
 	const mobileno = req.params.mobileno;
-	console.log("in addcart ",mobileno)
+
+	const today = new Date().toISOString().split("T")[0];
+
 	try {
-		const sql = "SELECT * FROM add_cart WHERE `mobileno` =?";
-		db.query(sql,[mobileno], (err, result) => {
+		const sql_order = "SELECT * FROM orders WHERE `date`=? ";
+		db.query(sql_order, [today], (err, result) => {
 			if (err) {
-				console.log(err);
-				return res.json({ message: "error" });
-			} else if (result.length === 0) {
-				return res.json({ message: "nodata" });
+				console.log("Error in order sql");
+			} else if (result.length == 0) {
+				const sql = "SELECT * FROM add_cart WHERE `mobileno` =?";
+				db.query(sql, [mobileno], (err, result) => {
+					if (err) {
+						console.log(err);
+						return res.json({ message: "error" });
+					} else if (result.length === 0) {
+						return res.json({ message: "nodata" });
+					} else {
+						const quantities = result.map((item) => item.quantity);
 
-			} else {
-				const quantities = result.map((item) => item.quantity);
+						const sql_price = "SELECT `price` FROM item WHERE itemID = ?";
 
-				const sql_price = "SELECT `price` FROM item WHERE itemID = ?";
+						let completedQueries = 0;
+						let count = 0;
+						for (let i = 0; i < quantities.length; i++) {
+							db.query(sql_price, [result[i].itemID], (err, result_price) => {
+								if (err) {
+									console.log(err);
+								} else {
+									count += quantities[i];
+									
+									totalPrice += result_price[0].price * quantities[i];
+								}
+								completedQueries++;
 
-				let completedQueries = 0;
-				let count = 0;
-				for (let i = 0; i < quantities.length; i++) {
-					db.query(sql_price, [result[i].itemID], (err, result_price) => {
-						if (err) {
-							console.log(err);
-						} else {
-							count +=quantities[i];
-							 console.log(count);
-							totalPrice += result_price[0].price * quantities[i];
-
+								if (completedQueries === quantities.length) {
+									console.log(count);
+									return res.json({ totalPrice, count, message: "success" });
+								}
+							});
 						}
-						completedQueries++;
-
-						if (completedQueries === quantities.length) {
-							console.log(count);
-							return res.json({ totalPrice,count, message: "success" });
-						}
-					});
-				}
+					}
+				});
 			}
 		});
 	} catch (err) {
