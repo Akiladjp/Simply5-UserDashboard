@@ -29,14 +29,10 @@ add_cart.get("/get_totalPrice/:mobileno", (req, res) => {
 	var totalPrice = 0;
 	const mobileno = req.params.mobileno;
 
-	const today = new Date().toISOString().split("T")[0];
+	// const today = new Date().toISOString().split("T")[0];
 
 	try {
-		const sql_order = "SELECT * FROM orders WHERE `date`=? ";
-		db.query(sql_order, [today], (err, result) => {
-			if (err) {
-				console.log("Error in order sql");
-			} else if (result.length == 0) {
+		
 				const sql = "SELECT * FROM add_cart WHERE `mobileno` =?";
 				db.query(sql, [mobileno], (err, result) => {
 					if (err) {
@@ -69,8 +65,8 @@ add_cart.get("/get_totalPrice/:mobileno", (req, res) => {
 							});
 						}
 					}
-				});
-			}
+				
+			
 		});
 	} catch (err) {
 		console.log(err);
@@ -137,7 +133,7 @@ add_cart.post("/add_cart", async (req, res) => {
 
 add_cart.get("/get_cartValues", async (req, res) => {
 	const mobileno = req.query.mobileno;
-	try {
+		try {
 		const add_cart_item_id = [];
 		const add_cart_item_quanity = [];
 		const sqlID = "SELECT * FROM add_cart WHERE mobileno=?";
@@ -146,7 +142,6 @@ add_cart.get("/get_cartValues", async (req, res) => {
 			if (err) {
 				return res.json({ message: "Error in getting itemid from addcart" });
 			}
-
 			const result = [];
 
 			for (let j = 0; j < result_id.length; j++) {
