@@ -22,15 +22,22 @@ app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 
+// app.use(
+//   cors({
+//     origin: ["http://localhost:5176", "http://192.168.8.100:5176"], // Add your IP here
+//     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+//     allowedHeaders: ["Content-Type", "Authorization"],
+//     credentials: true,
+//   })
+// );
 app.use(
-  cors({
-    origin: ["http://localhost:5176", "http://192.168.8.100:5176"], // Add your IP here
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization"],
-    credentials: true,
-  })
+	cors({
+		origin: "*",
+		methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+		allowedHeaders: ["Content-Type", "Authorization"],
+		credentials: true,
+	})
 );
-
 app.use(
   session({
     secret: "your_secret_key",

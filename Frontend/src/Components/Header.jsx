@@ -102,7 +102,7 @@ export default function Header() {
 					console.log(response.data.totalPrice);
 				}
 			} catch (err) {
-				console.error("err", err);
+				// console.error("err", err);
 			}
 		};
 
