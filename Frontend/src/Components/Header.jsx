@@ -99,7 +99,7 @@ export default function Header() {
 
 					console.log(count);
 				} else if (response.data.message === "err") {
-					console.log(response.data.totalPrice);
+					console.log(response.data.message);
 				}
 			} catch (err) {
 				console.error("err", err);

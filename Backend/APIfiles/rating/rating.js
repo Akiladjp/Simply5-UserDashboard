@@ -117,6 +117,88 @@ rating.put("/rating_updateRate", (req, res) => {
 	}
 });
 
+rating.get("/feedback_rating/:mobileNo", (req, res) => {
+  const mobileno = req.params.mobileNo;
+
+  // SQL query to get orderID by mobileNO
+  const sql_orderid = "SELECT `orderID` FROM `orders` WHERE mobileNO = ?";
+  db.query(sql_orderid, [mobileno], (err, result) => {
+    if (err) {
+      console.log("Error in SQL:", err);
+      return res.json({ message: "Error in SQL" });
+    }
+
+    if (result.length === 0) {
+      return res.json({ message: "No order found for this mobile number" });
+    }
+
+    const orderIDs = result.map(order => order.orderID);
+
+    // Iterate through each orderID to get associated items
+    const finalresult = [];
+
+    // Use Promise.all to handle all the asynchronous tasks
+    Promise.all(orderIDs.map(orderID => {
+      return new Promise((resolve, reject) => {
+        const sql_itemID = "SELECT itemID FROM contains WHERE orderID = ?";
+        db.query(sql_itemID, [orderID], (err, idList) => {
+          if (err) {
+            console.log("Error in SQL:", err);
+            return reject(err);
+          }
+
+          if (idList.length === 0) {
+            return resolve(); // No items, continue to next order
+          }
+
+          const itemIDs = idList.map(row => row.itemID);
+
+          // Fetch all item details
+          Promise.all(itemIDs.map(itemID => {
+            return new Promise((resolveItem, rejectItem) => {
+              const sql_itemDetails =
+                "SELECT itemID, name, rate, number_of_reviewer, image_link FROM item WHERE itemID = ?";
+              db.query(sql_itemDetails, [itemID], async (err, itemDetails) => {
+                if (err) {
+                  console.log("Error in SQL:", err);
+                  return rejectItem(err);
+                }
+
+                if (itemDetails.length > 0) {
+                  const itemDetail = itemDetails[0];
+                  const imageUrl = await getImage(itemDetail.image_link);
+                  if (imageUrl) {
+                    finalresult.push({
+                      itemID: itemDetail.itemID,
+                      name: itemDetail.name,
+                      rate: itemDetail.rate,
+                      number_of_reviewer: itemDetail.number_of_reviewer,
+                      imageUrl,
+                    });
+                  } else {
+                    return res.json({ message: "Error in fetching image URL" });
+                  }
+                }
+                resolveItem();
+              });
+            });
+          }))
+            .then(resolve)
+            .catch(reject);
+        });
+      });
+    }))
+      .then(() => {
+        // Once all promises are resolved, send the final result
+        return res.json({ result: finalresult });
+      })
+      .catch(err => {
+        console.log("Error in promise execution:", err);
+        return res.json({ message: "Error in retrieving item details" });
+      });
+  });
+});
+
 
 
 export default rating;

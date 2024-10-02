@@ -64,6 +64,7 @@ add_cart.get("/get_totalPrice/:mobileno", (req, res) => {
 
 								if (completedQueries === quantities.length) {
 									console.log(count);
+								
 									return res.json({ totalPrice, count, message: "success" });
 								}
 							});
