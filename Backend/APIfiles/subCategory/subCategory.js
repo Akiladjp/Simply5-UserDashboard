@@ -6,10 +6,8 @@ const subcategory = express.Router();
 
 subcategory.get("/subcategory", async (req, res) => {
 	try {
-
 		const sql =
 			"SELECT DISTINCT `sub_category`,`image_link`, MAX(`rate`) AS max_rate FROM item GROUP BY `sub_category`";
-
 
 		db.query(sql, async (error, result) => {
 			if (error) {
@@ -17,10 +15,8 @@ subcategory.get("/subcategory", async (req, res) => {
 			} else {
 				let subCategories = [];
 
-       
 				for (let i = 0; i < result.length; i++) {
 					const imageUrl = await getImage(result[i].image_link);
-					
 
 					subCategories.push({
 						name: result[i]["sub_category"],
@@ -39,36 +35,34 @@ subcategory.get("/subcategory", async (req, res) => {
 const category = express.Router();
 
 subcategory.get("/subcategoryitems", async (req, res) => {
+	const categoryParam = req.query.category;
 
-	
-  const categoryParam = req.query.category;
+	try {
+		const sql = "SELECT * FROM item WHERE sub_category =? ";
 
-  try {
-    const sql = "SELECT * FROM item WHERE sub_category =? ";
+		db.query(sql, [categoryParam], async (err, ans) => {
+			if (err) return res.json({ Message: "Error inside server" });
 
-    db.query(sql,[categoryParam], async (err, ans) => {
-      if (err) return res.json({ Message: "Error inside server" });
+			const result = [];
 
-      const result = [];
+			const maxItems = Math.min(15, ans.length);
+			for (var i = 0; i < maxItems; i++) {
+				console.log(ans[i].name, ",");
 
-      const maxItems = Math.min(15, ans.length);
-      for (var i = 0; i < maxItems; i++) {
-        console.log(ans[i].name, ",");
+				const imageUrl = await getImage(ans[i].image_link);
 
-        const imageUrl = await getImage(ans[i].image_link);
+				result.push({
+					...ans[i],
+					image_url: imageUrl,
+				});
+			}
+			console.log("length", result);
 
-        result.push({
-          ...ans[i],
-          image_url: imageUrl,
-        });
-      }
-      console.log("length", result);
-
-      return res.json({ result });
-    });
-  } catch (error) {
-    console.log(error);
-    return res.json({ Message: "Error inside server" });
-  }
+			return res.json({ result });
+		});
+	} catch (error) {
+		console.log(error);
+		return res.json({ Message: "Error inside server" });
+	}
 });
 export default subcategory;

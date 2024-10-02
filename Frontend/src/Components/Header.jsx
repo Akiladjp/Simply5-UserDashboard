@@ -93,7 +93,7 @@ export default function Header() {
 		const fetchData = async () => {
 			try {
 				const response = await axios.get(`${API_URL}/get_totalPrice/${mobileno}`);
-
+console.log(response.data)
 				if (response.data.message === "success") {
 					dispatch(setItemCount(response.data.count));
 
