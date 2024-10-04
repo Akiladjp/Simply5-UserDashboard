@@ -25,6 +25,8 @@ import {
 	selectQuantityCount,
 } from "../Redux/Slices/QuantityCountSlice";
 import { selectMobileno } from "../Redux/Slices/AuthSlice";
+import toastr from "toastr";
+import "toastr/build/toastr.min.css";
 
 export default function Header() {
 	const API_URL = import.meta.env.VITE_API_URL;
@@ -32,6 +34,57 @@ export default function Header() {
 	const menubuttonstate = useSelector(selectButtonState);
 	const painpagestate = useSelector(selectMainpageState);
 	const count = useSelector(selectItemCount);
+	const mobile_no = useSelector(selectMobileno);
+
+	const [stateDetails, setStateDetails] = useState([]);
+  const prevStatus = useRef(null); // Store previous status
+
+  useEffect(() => {
+    // Load the previous status from localStorage on page load
+    prevStatus.current = localStorage.getItem("prevStatus");
+
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(`${API_URL}/check_state/${mobile_no}`);
+        if (response) {
+          console.log(response.data);
+          setStateDetails(response.data.result);
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    // Fetch the data immediately
+    fetchData();
+
+    // Set an interval to refetch the data every 5 seconds (5000ms)
+    const intervalId = setInterval(fetchData, 5000); // Adjust the interval as needed
+
+    // Clear the interval when the component is unmounted
+    return () => clearInterval(intervalId);
+  }, [mobile_no]);
+
+  useEffect(() => {
+    if (stateDetails && stateDetails.length > 0) {
+      const currentStatus = stateDetails[0]["status"];
+
+      // Compare the new status with the previous one from localStorage
+      if (currentStatus !== prevStatus.current) {
+        // Only show toastr if this is not the first page load
+        if (prevStatus.current !== null) {
+          toastr.success(currentStatus);
+        }
+        
+        // Update previous status in useRef and localStorage
+        prevStatus.current = currentStatus;
+        localStorage.setItem("prevStatus", currentStatus);
+      }
+    }
+  }, [stateDetails]);
+
+	// console.log("stateDtails----------------", stateDtails["status"]);
+
 	const changemenubuttonState = () => {
 		dispatch(setMenuButtonState(true));
 		dispatch(setCategoryAppearance(true));
@@ -92,7 +145,9 @@ export default function Header() {
 	useEffect(() => {
 		const fetchData = async () => {
 			try {
-				const response = await axios.get(`${API_URL}/get_totalPrice/${mobileno}`);
+				const response = await axios.get(
+					`${API_URL}/get_totalPrice/${mobileno}`
+				);
 
 				if (response.data.message === "success") {
 					dispatch(setItemCount(response.data.count));

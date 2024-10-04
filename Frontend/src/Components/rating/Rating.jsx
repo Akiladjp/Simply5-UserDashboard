@@ -2,14 +2,18 @@ import { RiStarSFill } from "react-icons/ri";
 import { useState } from "react";
 import axios from "axios";
 import toastr from "toastr";
-import "toastr/build/toastr.min.css"; // To include the styles
+import "toastr/build/toastr.min.css"; 
+import { useSelector } from "react-redux";
+import { selectMobileno } from "../../Redux/Slices/AuthSlice";
+// To include the styles
 const Rating = (props) => {
 	const [hover, setHover] = useState(null);
 	const [rating, setRating] = useState(null);
 	const [totalRate, setTotalRate] = useState(props.rate || 0);
+	const mobile_no = useSelector(selectMobileno)
 	const API_URL = import.meta.env.VITE_API_URL;
 	const [isDone, setIsDone] = useState(false);
-
+const order_ID = props.order_id;
 	console.log("rate and rewvers", props.rate, props.Pre_count);
 	const handelsubmit = (event) => {
 		event.preventDefault(); // Prevent the default form submit behavior
@@ -52,11 +56,15 @@ const Rating = (props) => {
 			const response = await axios.put(`${API_URL}/rating_updateRate`, {
 				id,
 				rating,
+				mobile_no,
 			});
 			if (response.status === 200) {
 				console.log(response.data.message);
 			} else {
 				console.log(response.data.message);
+				if(response.data.message=="Rating added successfully"){
+					toastr.info("Thank you !")
+				}
 			}
 		} catch (error) {
 			console.error("Error updating rating:", error);
@@ -128,7 +136,7 @@ const Rating = (props) => {
 										type="submit"
 										className="px-2 py-1 font-bold bg-green-500 rounded-lg"
 										onClick={() => {
-											hanleDesapear();
+											// hanleDesapear();
 										}}>
 										Submit
 									</button>
