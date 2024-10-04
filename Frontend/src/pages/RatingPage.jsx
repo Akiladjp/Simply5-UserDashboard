@@ -79,7 +79,7 @@ const RatingPage = () => {
 	const handleSubmit = async (event) => {
 		// Should log "function"
 		event.preventDefault();
-		if (feedbackValue["message"]!="") {
+		if (feedbackValue["message"] != "") {
 			try {
 				const response = await axios.post(
 					`${API_URL}/add_service/${empID}`,
@@ -106,17 +106,24 @@ const RatingPage = () => {
 			<div className=" h-screen   w-full flex">
 				<div className=" flex flex-col  h-full overflow-scroll w-full">
 					<div className="flex justify-center gap-x-8 flex-wrap w-full  h-auto flex-col md:flex-row  ">
-						{itemDetails.map((item, index) => (
-							<div key={index} className="gap-x-2  ">
-								<Rating
-									itemID={item.itemID}
-									name={item.name}
-									imageUrl={item.imageUrl}
-									rate={item.rate}
-									Pre_count={item.number_of_reviewer}
-								/>
+						{itemDetails && itemDetails.length !== 0 ? (
+							itemDetails.map((item, index) => (
+								<div key={index} className="gap-x-2">
+									<Rating
+										order_ID={order_id}
+										itemID={item.itemID}
+										name={item.name}
+										imageUrl={item.imageUrl}
+										rate={item.rate}
+										Pre_count={item.number_of_reviewer}
+									/>
+								</div>
+							))
+						) : (
+							<div className="bg-red-400 w-full h-full ">
+								<span></span>
 							</div>
-						))}
+						)}
 					</div>
 					<div className="w-full h-auto md:w-[80%] md:m-auto ">
 						<form onSubmit={handleSubmit}>
