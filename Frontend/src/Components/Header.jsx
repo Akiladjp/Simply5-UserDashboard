@@ -47,7 +47,7 @@ export default function Header() {
       try {
         const response = await axios.get(`${API_URL}/check_state/${mobile_no}`);
         if (response) {
-          console.log(response.data);
+          // console.log(response.data);
           setStateDetails(response.data.result);
         }
       } catch (error) {

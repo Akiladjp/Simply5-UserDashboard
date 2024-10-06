@@ -13,8 +13,8 @@ const RatingPage = () => {
 	const API_URL = import.meta.env.VITE_API_URL;
 	const mobile_no = useSelector(selectMobileno);
 	const dispatch = useDispatch();
-	const { order_id } = useParams();
-	const empID = 1;
+	const  {order_id}  = useParams();
+	const [empID,setEmpID] = useState(0);
 	const [reaction, setReaction] = useState("");
 	const [feedbackValue, setFeedbackValue] = useState({ message: "" });
 	const [thank_Disappear, setThank_Disappear] = useState(false);
@@ -29,6 +29,26 @@ const RatingPage = () => {
 	useEffect(() => {
 		changeMainpagestate();
 	}, []);
+
+//getting waiterID = empID
+useEffect(()=>{
+	const fetchData=async()=>{
+		try{
+				const response = await axios.get(`${API_URL}/get_waiterID/${order_id}`);
+				if(response){
+					console.log(response.data.waiterID)
+					setEmpID(response.data.waiterID)
+				}
+				else{
+					console.log("no data")
+				}
+		}
+		catch(err){
+			console.log("Axios Errro in getting waiterID ",err)
+		}
+	}
+	fetchData();
+},[])
 	useEffect(() => {
 		const fetchData = async () => {
 			try {

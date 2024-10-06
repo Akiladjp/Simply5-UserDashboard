@@ -8,11 +8,11 @@ const add_cart = express.Router();
 add_cart.get("/get_qaun_item", (req, res) => {
 	const itemID = req.query.itemID;
 	const mobileno = req.query.mobileno;
-
+	const date = new Date().toISOString().split("T")[0];
 	//console.log(itemID, mobileno);
 	try {
-		const sql = "SELECT * FROM add_cart WHERE mobileno=? AND  itemID=?";
-		db.query(sql, [mobileno, itemID], async (err, result) => {
+		const sql = "SELECT * FROM add_cart WHERE mobileno=? AND  itemID=? AND date=?";
+		db.query(sql, [mobileno, itemID,date], async (err, result) => {
 			if (err) {
 				console.log(err);
 				return res.json({ message: "error" });
@@ -28,13 +28,13 @@ add_cart.get("/get_qaun_item", (req, res) => {
 add_cart.get("/get_totalPrice/:mobileno", (req, res) => {
 	var totalPrice = 0;
 	const mobileno = req.params.mobileno;
-
+	const date = new Date().toISOString().split("T")[0];
 	// const today = new Date().toISOString().split("T")[0];
 
 	try {
 		
-				const sql = "SELECT * FROM add_cart WHERE `mobileno` =?";
-				db.query(sql, [mobileno], (err, result) => {
+				const sql = "SELECT * FROM add_cart WHERE `mobileno` =? AND date=?";
+				db.query(sql, [mobileno,date], (err, result) => {
 					if (err) {
 						console.log(err);
 						return res.json({ message: "error" });
@@ -77,6 +77,8 @@ add_cart.get("/get_totalPrice/:mobileno", (req, res) => {
 add_cart.post("/add_cart", async (req, res) => {
 	console.log("req", req.body.mobileno);
 	console.log("req itemID", req.body.itemID);
+	const date = new Date().toISOString().split("T")[0];
+
 	try {
 		const sql1 = "SELECT * FROM add_cart WHERE mobileno=? AND itemID =?";
 
@@ -90,12 +92,13 @@ add_cart.post("/add_cart", async (req, res) => {
 					console.log("result length", result.length);
 					console.log("this is new item to cart");
 					const sql =
-						"INSERT INTO add_cart (`mobileno`, `itemID`, `quantity`) VALUES (?,?,?)";
+						"INSERT INTO add_cart (`mobileno`, `itemID`, `quantity`,`date`) VALUES (?,?,?,?)";
 
 					const values = [
 						req.body.mobileno,
 						req.body.itemID,
 						req.body.quantity,
+						date
 					];
 
 					db.query(sql, values, async (err, result) => {
@@ -133,12 +136,13 @@ add_cart.post("/add_cart", async (req, res) => {
 
 add_cart.get("/get_cartValues", async (req, res) => {
 	const mobileno = req.query.mobileno;
+	const date = new Date().toISOString().split("T")[0];
 		try {
 		const add_cart_item_id = [];
 		const add_cart_item_quanity = [];
-		const sqlID = "SELECT * FROM add_cart WHERE mobileno=?";
+		const sqlID = "SELECT * FROM add_cart WHERE mobileno=? AND date=?";
 
-		db.query(sqlID, [mobileno], async (err, result_id) => {
+		db.query(sqlID, [mobileno,date], async (err, result_id) => {
 			if (err) {
 				return res.json({ message: "Error in getting itemid from addcart" });
 			}
