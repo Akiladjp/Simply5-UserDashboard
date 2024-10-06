@@ -103,11 +103,11 @@ const Login = () => {
 					</div>
 					<div>
 						<input
-							className="w-[310px] mb-8 font-bold h-10 rounded-2xl mt-2 bg-[#FED991] shadow-md"
+							className="w-[310px] mb-8 font-bold h-10 rounded-2xl mt-2 bg-[#FED991] shadow-md hover:bg-[#ffd175] active:scale-95"
 							type="submit"
 							name="submit"
 							id="submit"
-							value="REGISTER"
+							value="Place Your Order"
 						/>
 					</div>
 				</form>

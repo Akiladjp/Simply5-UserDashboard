@@ -16,6 +16,7 @@ import rating from "./APIfiles/rating/rating.js"
 import billSection from "./APIfiles/billSection/billSection.js";
 import service from "./APIfiles/Service/service.js"
 import check_state from "./APIfiles/checkState/checkState.js"
+import sliderUpload from "./APIfiles/Slider/SliderImages.js";
 const app = express();
 const PORT = process.env.PORT || 8082;
 
@@ -59,6 +60,7 @@ app.use('/',rating);
 app.use('/', billSection);
 app.use('/', service);
 app.use('/', check_state);
+app.use('/', sliderUpload);
 
 app.listen(PORT, '0.0.0.0', () => {
   console.log(`Server is running on port ,${PORT}`);

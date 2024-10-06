@@ -13,8 +13,7 @@ export const LgBtn = () => {
     axios
       .get(`${API_URL}/logout`)
       .then((res) => {
-        navigate('/login');
-      })
+        navigate('/login/:id');      })
       .catch((err) => console.log(err));
   };
 
