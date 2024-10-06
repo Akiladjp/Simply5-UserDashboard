@@ -1,4 +1,4 @@
-import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom";
+import { createBrowserRouter, RouterProvider, Outlet, useNavigate } from "react-router-dom";
 import Header from "./Components/Header";
 
 import MainPage from "./pages/MainPage";
@@ -7,7 +7,7 @@ import ItemList from "./pages/ItemList";
 import { Provider, useSelector } from "react-redux";
 import { store } from "./Redux/Store";
 import "./App.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { selectButtonState } from "./Redux/Slices/AddbuttonSlice";
 import Cart from "./Components/Cart";
 import Login from "./Components/UserRegister";
@@ -23,13 +23,16 @@ import { selectUsername } from "./Redux/Slices/AuthSlice";
 import SubCategoryItem from "./Components/SubCategoruItem";
 import PreFeedback from "./pages/PreFeedback";
 const Layout = () => {
+	const navigate = useNavigate();
 	const username = useSelector(selectUsername);
 	const buttonState = useSelector(selectButtonState);
 	const categoryAppearance = useSelector(selectCategoryAppearance);
 
-	if (!username) {
-		return <Login />;
-	}
+	useEffect(() => {
+        if (!username) {
+            navigate("/login/:id");
+        }
+    }, [username, navigate]);
 
 	return (
 		<div className="flex flex-col h-screen  overflow-hidden lg:w-[60%] lg:left-[20%] lg:right-[20%] lg:absolute">
@@ -72,7 +75,7 @@ const router = createBrowserRouter([
 		],
 	},
 
-	{ path: "/login", element: <Login /> },
+	{ path: "/login/:id", element: <Login /> },
 	{ path: "/give-you-feedback", element: <PreFeedback /> },
 	{ path: "/itemcart", element: <ItemCart /> },
 	{ path: "/test", element: <Testimage /> },
