@@ -56,7 +56,7 @@ function PreFeedback() {
 			
 				<Link
 					to="/"
-					className="w-40 h-16 px-4 py-2 bg-orange-500 flex items-center justify-center m-auto top-20 relative bottom-0 text-white text-xl rounded-lg">
+					className="w-40 h-16 px-4 py-2 bg-orange-500 flex items-center justify-center m-auto top-20 relative bottom-0 text-white text-xl rounded-lg hover:bg-orange-600">
 					SKIP
 				</Link>
 			</div>

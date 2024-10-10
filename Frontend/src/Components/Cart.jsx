@@ -15,6 +15,7 @@ import {
 	selectButtonState,
 	setButtonState,
 } from "../Redux/Slices/AddbuttonSlice.js";
+import toastr from "toastr";
 
 export default function Cart() {
 	const dispatch = useDispatch();
@@ -91,29 +92,37 @@ export default function Cart() {
 	//Place Order
 
 	const navigate = useNavigate();
+console.log(totalPrice)
+const handleOrder = async (mobileno) => {
+  try {
+    // Ensure totalPrice is greater than zero
+    if (totalPrice > 0) {
+      const order = {
+        mobileno: mobileno,
+        tableno: 1,
+        status: "pending",
+        total: (totalPrice + totalPrice * 0.1).toFixed(2), // Add 10% to totalPrice
+        time: new Date().toLocaleTimeString(),
+        date: new Date().toISOString().split("T")[0],
 
-	const handleOrder = async (mobileno) => {
-		try {
-			const order = {
-				mobileno: mobileno,
-				tableno: 1,
-				status: "pending",
-				total: totalPrice + totalPrice * 0.1,
-				time: new Date().toLocaleTimeString(),
-				date: new Date().toISOString().split("T")[0],
+        items: cartValues.result.map((cart, index) => ({
+          itemID: cart.itemID,
+          quantity: cartValues.add_cart_item_quanity[index],
+        })),
+      };
 
-				items: cartValues.result.map((cart, index) => ({
-					itemID: cart.itemID,
-					quantity: cartValues.add_cart_item_quanity[index],
-				})),
-			};
+      // Send the order via a POST request
+      await axios.post(`${API_URL}/create_order/${mobileno}`, order);
 
-			await axios.post(`${API_URL}/create_order/${mobileno}`, order);
-			navigate("/bill");
-		} catch (err) {
-			console.log(err);
-		}
-	};
+      // Navigate to the bill page after successful order
+      navigate("/bill");
+    } else {
+      console.log("Please ensure the total price is greater than zero.");
+    }
+  } catch (err) {
+    console.error("Error placing order:", err);
+  }
+};
 
 	return (
 		<>
@@ -139,15 +148,18 @@ export default function Cart() {
 				<div className="border-[2px] z-20 bottom-0 fixed w-full shadow-top rounded-t-3xl pt-8 pb-8 bg-white h-[240px] shadow-lg lg:w-[60%]">
 					<div className="flex justify-between mx-2 text-[18px] mb-3 font-bold">
 						<div>Order Price</div>
-						<div>{totalPrice}</div>
+						<div>{isNaN(totalPrice) ? "Rs. 0.0" : "Rs."+Math.round(totalPrice)}</div>
+
 					</div>
 					<div className="flex justify-between mx-2 text-[18px] mb-3 font-bold">
 						<div>Service Charge</div>
-						<div>{totalPrice * 0.1}</div>
+						<div>{isNaN(totalPrice) ? "Rs. 0.0" : "Rs."+Math.round(totalPrice * 0.1)}</div>
+						
 					</div>
 					<div className="flex justify-between mx-2 text-[18px] mb-3 font-bold">
 						<div>Total Price</div>
-						<div>{totalPrice + totalPrice * 0.1}</div>
+						<div>{isNaN(totalPrice) ? "Rs.0.0" : "Rs."+Math.round(totalPrice + totalPrice * 0.1)}</div>
+				
 					</div>
 					<div className="flex items-center justify-center gap-8 mb-2 ">
 						<Link to="/">
@@ -159,7 +171,8 @@ export default function Cart() {
 						</Link>
 						<Link>
 							<button
-								className="bg-[#28A745] py-1 w-20 rounded-md shadow-lg my-2 text-white uppercase font-bold"
+								className="bg-[#28A745] py-1 w-20 rounded-md shadow-lg my-2 text-white uppercase font-bold :"
+								
 								onClick={() => handleOrder(mobileno)}>
 								order
 							</button>

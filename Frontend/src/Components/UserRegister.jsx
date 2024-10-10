@@ -15,17 +15,12 @@ const Login = () => {
 	const dispatch = useDispatch();
 	const username = useSelector(selectUsername);
 	const navigate = useNavigate();
-	const {id: tableNo } = useParams();
+	const { id: tableNo } = useParams();
 
-	useEffect(() => {
-		if (username) {
-			navigate("/");
-		}
-	}, [username, navigate]);
 
 	useEffect(() => {
 		console.log("Table Number:", tableNo);
-	  }, [tableNo]);
+	}, [tableNo]);
 
 	const API_URL = import.meta.env.VITE_API_URL;
 	const [values, setValues] = useState({
@@ -52,10 +47,10 @@ const Login = () => {
 			dispatch(
 				setUservalue({ username: values.name, mobileno: values.phoneNo })
 			);
-
+			console.log(response.data.message);
 			if (response.data.message === "already") {
 				navigate("/give-you-feedback");
-				toastr.success("Welcome Back", { timeout: 300 });
+				// toastr.success("Welcome ", { timeout: 300 });
 			} else {
 				navigate("/");
 				toastr.success("Welcome ", { timeout: 300 });
@@ -115,7 +110,8 @@ const Login = () => {
 			<div>
 				<p className="text-[6px] md:text-[8px] flex justify-center">
 					By signing in or creating an account, you agree with our&nbsp;
-					<span className="text-blue-600">Terms & conditions</span> &nbsp;and&nbsp;{" "}
+					<span className="text-blue-600">Terms & conditions</span>{" "}
+					&nbsp;and&nbsp;{" "}
 					<span className="text-blue-600">Privacy statement</span>
 				</p>
 

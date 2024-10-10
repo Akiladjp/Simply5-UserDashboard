@@ -32,21 +32,21 @@ export default function Slider() {
         transitionDuration={1000}
         infinite={true}
         indicators={true}
-        arrows={true}
+        arrows={false}
       >
         {bannerShow.length > 0 ? (
           bannerShow.map((data, index) => (
             <div
               key={index}
-              className="relative w-full h-[400px] overflow-hidden rounded-lg shadow-lg"
+              className="relative w-full h-[400px] overflow-hidden rounded-lg shadow-lg bg-red-400"
             >
               <img
                 src={data.image_url}
                 alt={`banner-${data.offerID}`}
-                className="w-full h-full object-cover bg-center rounded-lg transition-transform duration-500"
+                className="w-full h-full  md:w-[1000px] md:h-[400px] object-cover bg-center rounded-lg transition-transform duration-500"
               />
-              <div className="absolute bottom-4 left-4 bg-black bg-opacity-50 text-white p-2 rounded-md">
-              </div>
+              {/* <div className="absolute bottom-4 left-4 bg-black bg-opacity-100 text-white p-2 rounded-md">
+              </div> */}
             </div>
           ))
         ) : (

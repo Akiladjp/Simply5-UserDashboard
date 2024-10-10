@@ -8,7 +8,16 @@ service.post("/add_service/:empID", (req, res) => {
 	const empID = req.params.empID;
 	console.log(empID);
 	const today = new Date();
-	const date = today.toISOString().split("T")[0];
+	
+	const offset = today.getTimezoneOffset(); // Get the time zone offset in minutes
+	const sriLankaOffset = 330; // Sri Lanka is UTC+5:30, which is 330 minutes ahead
+
+	// Adjust the date based on the offset
+	const adjustedDate = new Date(
+		today.getTime() + (sriLankaOffset + offset) * 60000
+	);
+
+	const date = adjustedDate.toISOString().split("T")[0];
 	console.log(date); // Outputs: "YYYY-MM-DD"
 	try {
 		const sql = "INSERT INTO service (empID,date,comment) VALUES (?,?,?)  ";
@@ -25,20 +34,19 @@ service.post("/add_service/:empID", (req, res) => {
 });
 service.get("/get_waiterID/:order_id", (req, res) => {
 	const orderID = req.params.order_id;
-	try{
-const sql ="SELECT waiterID FROM orders WHERE `orderID`=?" 
-db.query(sql,[orderID],(err,result)=>{
-	if(err){
-		console.log("Error in sql",err)
-		return
-	}
-	if(result.length>0){
-		return res.json({waiterID:result[0]["waiterID"]})
-	}
-})
-	}
-	catch(err){
-		console.log("serve error")
+	try {
+		const sql = "SELECT waiterID FROM orders WHERE `orderID`=?";
+		db.query(sql, [orderID], (err, result) => {
+			if (err) {
+				console.log("Error in sql", err);
+				return;
+			}
+			if (result.length > 0) {
+				return res.json({ waiterID: result[0]["waiterID"] });
+			}
+		});
+	} catch (err) {
+		console.log("serve error");
 	}
 });
 

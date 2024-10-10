@@ -87,7 +87,7 @@ useEffect(()=>{
 	console.log(feedbackValue["message"]);
 	const handleChange = (event) => {
 		event.preventDefault();
-		const comment = reaction + " " + event.target.value;
+		const comment = reaction + ", " + event.target.value;
 
 		setFeedbackValue({
 			...feedbackValue,
@@ -162,7 +162,7 @@ useEffect(()=>{
 												? "🤩"
 												: reaction === "Good"
 												? "👍"
-												: "😒"}
+												: "👎"}
 										</span>
 									</div>
 
@@ -189,7 +189,7 @@ useEffect(()=>{
 											className="text-4xl hover:scale-105 hover:mb-6"
 											onClick={(e) => handleReaction(e)}
 											value="Bad">
-											😒
+											👎
 										</button>
 									</div>
 								</div>
@@ -200,6 +200,7 @@ useEffect(()=>{
 									placeholder="Please share your thoughts"
 									name="comment"
 									onChange={handleChange}
+									required
 								/>
 
 								<input
