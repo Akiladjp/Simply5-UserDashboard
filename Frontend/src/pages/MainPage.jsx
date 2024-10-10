@@ -157,7 +157,7 @@ export default function MainPage() {
                 }}
                 className="flex items-center justify-center rounded-lg border-none w-[360px] h-[180px] object-cover bg-no-repeat md:w-[700px]"
               >
-                <p className="z-50 absolute left-12 text-5xl text-white font-semibold hover:text-[50px]">{cat.CName}</p>
+                <p className="z-50 absolute left-12 text-3xl lg:text-5xl text-white font-semibold lg:hover:text-[50px]">{cat.CName}</p>
               </div>
             </div>
           </div>
