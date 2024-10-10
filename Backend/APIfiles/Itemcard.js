@@ -12,7 +12,7 @@ const itemcard = express.Router();
 
 itemcard.get("/itemcard", async (req, res) => {
   try {
-    const sql = "SELECT * FROM item WHERE rate >9.3";
+    const sql = "SELECT * FROM item WHERE rate >2.7";
 
     db.query(sql, async (err, ans) => {
       if (err) return res.json({ Message: "Error inside server" });
