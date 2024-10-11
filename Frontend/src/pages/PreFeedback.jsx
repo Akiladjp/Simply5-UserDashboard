@@ -28,13 +28,13 @@ function PreFeedback() {
 	}, []);
 	return (
 		<>
-			<div className="w-[60%]  h-auto m-auto ">
+			<div className="md:w-[60%] w-full h-auto m-auto ">
 				<h1 className="w-full text-center md:text-4xl justify-center text-[17px]  mt-8">Give Your Feedback about your last experience</h1>
-				<div className="md:mt-8 w-full h-auto flex md:flex-row  md:gap-x-8 flex-col items-center justify-center flex-wrap">
+				<div className="md:mt-8 w-full h-auto flex md:flex-row  md:gap-x-8 flex-col items-center justify-center flex-wrap ">
 				{
   itemDetails && itemDetails.length !== 0 ? (
     itemDetails.map((item, index) => (
-      <div key={index} className="gap-x-2">
+      <div key={index} className="gap-x-2 flex item-start ">
         <Rating
 				order_ID={item.order_ID}
           itemID={item.itemID}

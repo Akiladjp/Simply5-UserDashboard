@@ -77,7 +77,7 @@ export default function MainPage() {
   return (
     <div
       className={`${
-        buttonState ? " " : " relative flex flex-col w-full h-auto "
+        buttonState ? "overflow-clip h-screen  w-full" : " relative flex flex-col w-full h-auto "
       }`}
     >
       <ScrollToTop />
@@ -92,16 +92,15 @@ export default function MainPage() {
             : "flex items-center justify-around h-auto py-2 mt-8"
         }`}
       >
-        <div className="bg-black h-1 w-[20%] sm-w-40 lg:w-[30%]"></div>
         <h1 className="text-2xl font-semibold">HOT DEALS</h1>
-        <div className="bg-black h-1 w-[20%] lg:w-[30%]"></div>
+    
       </div>
 
       <div className="flex w-full  justify-center items-center m-auto">
         <div
           className={`${
             buttonState
-              ? "blur-sm flex items-center justify-start lg:px-24"
+              ? "blur-sm flex items-center justify-center lg:px-24 flex-wrap "
               : "  mt-6 grid grid-cols-1 gap-x-4 lg:gap-x-12 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8 "
           }`}
         >
@@ -130,9 +129,9 @@ export default function MainPage() {
             : "flex items-center justify-around h-auto py-2 mt-8"
         }`}
       >
-        <div className="bg-black h-1 w-[20%] sm-w-40 lg:w-[30%]"></div>
+  
         <h1 className="text-2xl font-semibold">Main Categories</h1>
-        <div className="bg-black h-1 w-[20%] lg:w-[30%]"></div>
+       
       </div>
 
       {category.map((cat, index) => (
@@ -165,9 +164,8 @@ export default function MainPage() {
       ))}
       <div className="flex flex-col items-center justify-around w-full h-auto py-2 mt-6">
         <div className="flex items-center justify-around w-full h-auto py-2">
-          <div className="bg-black h-1 w-[20%] sm-w-40 lg:w-[30%]"></div>
-          <h1 className="text-2xl font-semibold">ALL Categories</h1>
-          <div className="bg-black h-1 w-[20%] lg:w-[30%]"></div>
+            <h1 className="text-2xl font-semibold">ALL Categories</h1>
+      
         </div>
 
         <div className="flex  w-[95%] gap-2 lg:w-[70%] ">

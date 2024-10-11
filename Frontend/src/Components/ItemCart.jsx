@@ -106,7 +106,7 @@ export default function ItemCart({
 		<div
 			className={`flex flex-col items-center justify-start  ${
 				buttonTitle !== "ADD" ? "h-[300px] w-[160px]" : "h-[280px] w-40"
-			} pb-2 overflow-hidden  shadow-xl rounded-xl shadow-slate-400`}>
+			} pb-2 overflow-hidden  shadow-md rounded-xl shadow-slate-400`}>
 			{loading && (
 				<div>
 					<ClipLoader size={60} color={"#000"} loading={loading} />
