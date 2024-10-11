@@ -42,11 +42,11 @@ const Layout = () => {
 			<div
 				className={`${
 					categoryAppearance
-						? "blur-sm lg:w-[60%] fixed z-0"
+						? "blur-sm lg:w-[60%] fixed z-0 "
 						: "w-full absolute h-screen z-0 overflow-scroll "
 				} ${
 					buttonState
-						? "blur-0 h-screen w-full overflow-hidden"
+						? "blur-0 h-screen w-full fixed z-0 "
 						: "top-[50px] w-full"
 				}`}>
 				<Outlet />

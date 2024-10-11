@@ -221,7 +221,7 @@ const PopOrder = () => {
                 <div className="flex justify-between">
                   <button
                     onClick={updateCansel}
-                    className="uppercase shadow-sm w-[80px] py-1 rounded-md bg-red-600 text-white font-bold text-[10px]"
+                    className="uppercase shadow-sm w-[80px] py-2 rounded-md bg-red-600 text-white font-bold text-[10px]"
                   >
                     cancel
                   </button>

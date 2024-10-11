@@ -1,10 +1,10 @@
-
 import db from "../Config/DatabaseConfig.js";
 import express from "express";
 import { getImage } from "../AWS/get_images.js";
 import multer from "multer";
 import { uploadImage } from "../AWS/upload_image.js";
-
+ 
+ 
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 //import session from "express-session";

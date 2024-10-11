@@ -6,6 +6,7 @@ import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { setMenuButtonState } from "../Redux/Slices/MenuButtonSlice";
 import { useDispatch, useSelector } from "react-redux";
+import { MdOutlineKeyboardBackspace } from "react-icons/md";
 
 import { TbReportMoney } from "react-icons/tb";
 import {
@@ -37,51 +38,51 @@ export default function Header() {
 	const mobile_no = useSelector(selectMobileno);
 
 	const [stateDetails, setStateDetails] = useState([]);
-  const prevStatus = useRef(null); // Store previous status
+	const prevStatus = useRef(null); // Store previous status
 
-  useEffect(() => {
-    // Load the previous status from localStorage on page load
-    prevStatus.current = localStorage.getItem("prevStatus");
+	useEffect(() => {
+		// Load the previous status from localStorage on page load
+		prevStatus.current = localStorage.getItem("prevStatus");
 
-    const fetchData = async () => {
-      try {
-        const response = await axios.get(`${API_URL}/check_state/${mobile_no}`);
-        if (response) {
-          // console.log(response.data);
-          setStateDetails(response.data.result);
-        }
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
+		const fetchData = async () => {
+			try {
+				const response = await axios.get(`${API_URL}/check_state/${mobile_no}`);
+				if (response) {
+					// console.log(response.data);
+					setStateDetails(response.data.result);
+				}
+			} catch (error) {
+				console.error("Error fetching data:", error);
+			}
+		};
 
-    // Fetch the data immediately
-    fetchData();
+		// Fetch the data immediately
+		fetchData();
 
-    // Set an interval to refetch the data every 5 seconds (5000ms)
-    const intervalId = setInterval(fetchData, 5000); // Adjust the interval as needed
+		// Set an interval to refetch the data every 5 seconds (5000ms)
+		const intervalId = setInterval(fetchData, 5000); // Adjust the interval as needed
 
-    // Clear the interval when the component is unmounted
-    return () => clearInterval(intervalId);
-  }, [mobile_no]);
+		// Clear the interval when the component is unmounted
+		return () => clearInterval(intervalId);
+	}, [mobile_no]);
 
-  useEffect(() => {
-    if (stateDetails && stateDetails.length > 0) {
-      const currentStatus = stateDetails[0]["status"];
+	useEffect(() => {
+		if (stateDetails && stateDetails.length > 0) {
+			const currentStatus = stateDetails[0]["status"];
 
-      // Compare the new status with the previous one from localStorage
-      if (currentStatus !== prevStatus.current) {
-        // Only show toastr if this is not the first page load
-        if (prevStatus.current !== null) {
-          toastr.success(currentStatus);
-        }
-        
-        // Update previous status in useRef and localStorage
-        prevStatus.current = currentStatus;
-        localStorage.setItem("prevStatus", currentStatus);
-      }
-    }
-  }, [stateDetails]);
+			// Compare the new status with the previous one from localStorage
+			if (currentStatus !== prevStatus.current) {
+				// Only show toastr if this is not the first page load
+				if (prevStatus.current !== null) {
+					toastr.success(currentStatus);
+				}
+
+				// Update previous status in useRef and localStorage
+				prevStatus.current = currentStatus;
+				localStorage.setItem("prevStatus", currentStatus);
+			}
+		}
+	}, [stateDetails]);
 
 	// console.log("stateDtails----------------", stateDtails["status"]);
 
@@ -203,8 +204,11 @@ export default function Header() {
 
 				<button
 					onClick={() => setCheckSize(false)}
-					className={`${checkSize ? "flex" : "hidden"}`}>
+					className={`${
+						checkSize ? "flex " : "hidden"
+					}`}>
 					<CloseIcon fontSize="large" />
+	
 				</button>
 
 				<div className="px-2 mt-2">
@@ -241,32 +245,36 @@ export default function Header() {
 			</div>
 
 			<div
-				className={`${
-					checkSize ? "flex" : "hidden"
-				}  bg-white z-10 fixed top-[50px] bottom-4  overflow-y-auto left-0 rounded-b-md  shadow-xl shadow-gray-600 pb-4 h-screen py-4 lg:left-[20%] flex flex-col `}
-				ref={divRef}>
-				{subCategotyValues.map((category, index) => (
-					<ul
-						className="text-lg flex flex-col w-[270px] items-center pb-8 h-auto relative justify-around py-2"
-						key={index}>
-						<li
-							className="font-bold flex flex-col gap-2 cursor-pointer"
-							onClick={() => {
-								dispatch(setCategoryAppearance(false));
-								setCheckSize(false);
-								navigate(
-									`/subcategoryitem/${encodeURIComponent(category.name)}`
-								);
-							}}>
-							{category.name}
-						</li>
-						{category.items &&
-							category.items.map((item, itemIndex) => (
-								<li key={itemIndex}>{item.name}</li>
-							))}
-					</ul>
-				))}
-			</div>
+  className={`${
+    checkSize
+      ? "translate-x-0 md:translate-x-0 transform duration-300  ease-out"
+      : "translate-x-[-270px] md:translate-x-[-270px] md:hidden transform duration-300  ease-in"
+  } bg-white z-10 fixed top-[50px] bottom-4 overflow-y-auto left-0 rounded-b-md shadow-xl shadow-gray-600 pb-4 h-screen py-4 lg:left-[20%] flex flex-col`}
+  ref={divRef}
+>
+  {subCategotyValues.map((category, index) => (
+    <ul
+      className="text-lg flex flex-col w-[270px] items-center pb-8 h-auto relative justify-around py-2"
+      key={index}
+    >
+      <li
+        className="font-bold flex flex-col gap-2 cursor-pointer"
+        onClick={() => {
+          dispatch(setCategoryAppearance(false));
+          setCheckSize(false);
+          navigate(`/subcategoryitem/${encodeURIComponent(category.name)}`);
+        }}
+      >
+        {category.name}
+      </li>
+      {category.items &&
+        category.items.map((item, itemIndex) => (
+          <li key={itemIndex}>{item.name}</li>
+        ))}
+    </ul>
+  ))}
+</div>
+
 		</>
 	);
 }

@@ -5,6 +5,7 @@ import axios from "axios";
 
 export default function Slider() {
   const [bannerShow, setBannerShow] = useState([]);
+  const[loading,setLoading] = useState(false)
   const API_URL = import.meta.env.VITE_API_URL;
 
   useEffect(() => {
@@ -26,25 +27,26 @@ export default function Slider() {
   }, []);
 
   return (
-    <div className="w-[350px] h-[200px] md:w-[700px] md:h-[400px] lg:w-[1000px] lg:h-[600px] mx-auto p-4">
+    <div className="w-[380px] h-[200px] md:w-[700px] md:h-[400px] lg:w-[1000px] lg:h-auto mx-auto p-4 gap-x-4 ">
       <Slide
-        duration={5000}
+        duration={500}
         transitionDuration={1000}
         infinite={true}
         indicators={true}
-        arrows={false}
+        arrows={true}
+    
       >
         {bannerShow.length > 0 ? (
           bannerShow.map((data, index) => (
             <div
 
-              className="relative w-full h-[150px] md:h-[300px] lg:h-[400px] overflow-hidden rounded-lg shadow-lg"
+              className="relative w-full h-[150px] md:h-[300px] lg:h-[400px] overflow-hidden  shadow-lg"
 
             >
               <img
                 src={data.image_url}
                 alt={`banner-${data.offerID}`}
-                className="w-full h-full  md:w-[1000px] md:h-[400px] object-cover bg-center rounded-lg transition-transform duration-500"
+                className="w-[380px] h-[200px]  md:w-[1000px] md:h-[400px] object-cover bg-center  transition-transform duration-500"
               />
               {/* <div className="absolute bottom-4 left-4 bg-black bg-opacity-100 text-white p-2 rounded-md">
               </div> */}

@@ -16,6 +16,7 @@ import {
 	setButtonState,
 } from "../Redux/Slices/AddbuttonSlice.js";
 import toastr from "toastr";
+import Card_InAddcart from "./card_InAddcart.jsx";
 
 export default function Cart() {
 	const dispatch = useDispatch();
@@ -126,13 +127,13 @@ const handleOrder = async (mobileno) => {
 
 	return (
 		<>
-			<div className="bottom-0 w-full h-screen overflow-hidden">
+			<div className="bottom-0 w-full h-screen  items-start flex justify-center md:flex-row md:flex-wrap">
 				{/* Header Component */}
 				<ScrollToTop />
 
-				<div className="flex flex-wrap justify-start w-full gap-5 p-2 bg-white mt-[20px] mb-[250px] h-[700px] overflow-scroll pb-40 ">
+				<div className="flex flex-wrap justify-start w-full md:justify-center md:gap-x-4  p-2  mt-[20px]  h-[700px]  gap-y-4 md:gap-y-2  pb-[170px] overflow-scroll ">
 					{cartValues.result.map((cart, index) => (
-						<ItemCart
+						<Card_InAddcart
 							key={index}
 							itemID={cart.itemID}
 							buttonTitle="Remove"
