@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { setMenuButtonState } from "../Redux/Slices/MenuButtonSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { MdOutlineKeyboardBackspace } from "react-icons/md";
-
+import { BsArrowLeft } from "react-icons/bs";
 import { TbReportMoney } from "react-icons/tb";
 import {
 	selectButtonState,
@@ -216,9 +216,8 @@ export default function Header() {
 						onClick={() => {
 							handlearrow();
 						}}>
-						<IoArrowBackCircleOutline
-							className={`${painpagestate ? "hidden" : " text-4xl "}`}
-						/>
+							<BsArrowLeft className={`${painpagestate ? "hidden" : " text-3xl font-semibold "}`}/>
+						
 					</button>
 				</div>
 				<div className="flex justify-around gap-4 ">

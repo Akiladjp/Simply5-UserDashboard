@@ -24,6 +24,7 @@ const order_ID = props.order_id;
 			toastr.error("Plase select your stars!");
 		}
 	};
+	
 	const calculate_rate = (hover) => {
 		let points = 0;
 		if (hover === 1) {
