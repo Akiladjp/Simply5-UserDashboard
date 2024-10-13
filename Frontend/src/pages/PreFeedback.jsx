@@ -4,12 +4,14 @@ import Rating from "../Components/rating/Rating";
 import { useSelector } from "react-redux";
 import { selectMobileno } from "../Redux/Slices/AuthSlice";
 import axios from "axios";
+import { legacy_createStore } from "@reduxjs/toolkit";
 const API_URL = import.meta.env.VITE_API_URL;
 function PreFeedback() {
 	const navigate= useNavigate()
 	const mobile_no = useSelector(selectMobileno);
 	const [itemDetails, setItemDeails] = useState([]);
 	console.log(mobile_no);
+	
 
 	useEffect(() => {
 		const fetchData = async () => {
