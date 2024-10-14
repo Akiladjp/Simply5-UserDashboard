@@ -19,7 +19,7 @@ sliderUpload.get("/slider", async (req, res) => {
           const imageUrl = await getImage(ans[i].image_link);
           offerBanner.push({
             ...ans[i],
-            image_url: imageUrl,
+            image_url: imageUrl.url,
           });
         }
         console.log(offerBanner);

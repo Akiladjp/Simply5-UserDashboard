@@ -24,7 +24,7 @@ subcategory.get("/subcategory", async (req, res) => {
 
 					subCategories.push({
 						name: result[i]["sub_category"],
-						image_url: imageUrl,
+						image_url: imageUrl.url,
 					});
 				}
 
@@ -59,7 +59,7 @@ subcategory.get("/subcategoryitems", async (req, res) => {
 
         result.push({
           ...ans[i],
-          image_url: imageUrl,
+          image_url: imageUrl.url,
         });
       }
       console.log("length", result);

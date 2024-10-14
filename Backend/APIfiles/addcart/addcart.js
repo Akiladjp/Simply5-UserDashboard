@@ -171,7 +171,7 @@ add_cart.get("/get_cartValues", async (req, res) => {
 					result.push({
 						...itemResults[i],
 
-						image_url: imageUrl,
+						image_url: imageUrl.url,
 					});
 				}
 			}
