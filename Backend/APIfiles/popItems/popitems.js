@@ -21,7 +21,7 @@ popupitems.get("/getpopitems",async(req,res)=>{
         const imageURl= await getImage(ans[0].image_link);
         popItem.push({
           ...ans[0],
-          image_url : imageURl
+          image_url: imageURl.url,
         });
       }
     }

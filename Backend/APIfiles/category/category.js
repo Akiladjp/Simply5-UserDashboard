@@ -22,7 +22,7 @@ category.get("/category", async (req, res) => {
 
 				result.push({
 					...ans[i],
-					image_url: imageUrl,
+					image_url: imageUrl.url,
 				});
 			}
 

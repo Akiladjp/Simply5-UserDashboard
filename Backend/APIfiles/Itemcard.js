@@ -28,7 +28,7 @@ itemcard.get("/itemcard", async (req, res) => {
         const imageUrl = await getImage(ans[i].image_link);
         result.push({
           ...ans[i],
-          image_url: imageUrl
+          image_url: imageUrl.url
         });
       }
     //  console.log("length",result)
