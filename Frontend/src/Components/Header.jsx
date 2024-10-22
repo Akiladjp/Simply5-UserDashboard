@@ -74,6 +74,9 @@ export default function Header() {
 			if (currentStatus !== prevStatus.current) {
 				// Only show toastr if this is not the first page load
 				if (prevStatus.current !== null) {
+					// if(currentStatus === "pending"){
+					// 	toastr.success('Order placed');
+					// }
 					toastr.success(currentStatus);
 				}
 

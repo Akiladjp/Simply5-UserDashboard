@@ -62,7 +62,7 @@ const Login = () => {
 	};
 
 	return (
-		<div className="w-full h-screen">
+		<div className="w-full h-auto">
 			<Link to="/cart"></Link>
 
 			<div className="flex mx-auto mt-16 w-60">
