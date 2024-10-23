@@ -19,13 +19,8 @@ const RatingPage = () => {
 	const [feedbackValue, setFeedbackValue] = useState({ message: "" });
 	const [thank_Disappear, setThank_Disappear] = useState(false);
 
-	// console.log(" in rating page:", order_id);
-
 	const [itemDetails, setItemDeails] = useState([]);
 
-	useEffect(() => {
-		console.log("itemDetails",itemDetails);
-	}, []);
 	const changeMainpagestate = () => {
 		dispatch(setMainpageState(false));
 	};
@@ -39,7 +34,6 @@ const RatingPage = () => {
 			try {
 				const response = await axios.get(`${API_URL}/get_waiterID/${order_id}`);
 				if (response) {
-					console.log(response.data.waiterID);
 					setEmpID(response.data.waiterID);
 				} else {
 					console.log("no data");
@@ -58,7 +52,6 @@ const RatingPage = () => {
 				);
 
 				if (response.status === 200) {
-          console.log("response",response.data.result[0]["imageUrl"].url);
 					setItemDeails(response.data.result);
 				} else {
 					console.log("Error: Unexpected response status", response.status);
@@ -86,7 +79,6 @@ const RatingPage = () => {
 		});
 	};
 
-	console.log(feedbackValue["message"]);
 	const handleChange = (event) => {
 		event.preventDefault();
 		const comment = reaction + ", " + event.target.value;
@@ -110,7 +102,7 @@ const RatingPage = () => {
 						headers: { "Content-Type": "application/json" },
 					}
 				);
-				console.log(response.data);
+
 				if (response.status === 200) {
 					setThank_Disappear(true);
 				} else {
