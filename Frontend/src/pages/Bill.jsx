@@ -39,9 +39,6 @@ const Bill = () => {
 
   const [itemInfo, setItemInfo] = useState([]);
 
-  // console.log("Order info is", itemInfo[0]);
-  console.log("Bill ID is: ", billDataOrder.billNo);
-
   useEffect(() => {
     const fetchData = async () => {
       console.log(mobileno);
@@ -57,6 +54,7 @@ const Bill = () => {
             total: order.total || "null",
           });
 
+          console.log()
           setItemInfo(response.data);
         } else {
           console.log("Error in query");
@@ -124,7 +122,7 @@ const Bill = () => {
                 <td className="px-6 py-4 text-gray-700">{data.price}</td>
                 <td className="px-6 py-4 text-gray-700">{data.quantity}</td>
                 <td className="px-6 py-4 text-gray-700">
-                  {data.price * data.quantity}
+                  {data.quantity * data.price}
                 </td>
               </tr>
             ))}
@@ -142,9 +140,12 @@ const Bill = () => {
                 Order Price:
               </td>
               <td className="px-6 py-4 font-semibold text-lg">
-                <p>
-                  {(billDataOrder.total - (billDataOrder.total * 10) / 11) * 10}
-                </p>
+                {/* Calculate the total order price */}
+                {
+                  itemInfo.reduce((total, data) => {
+                    return total + data.price * data.quantity;
+                  }, 0).toFixed(2) // Reduce key word use for find Sum and toFixed(2) use to  fix two point of the answer;
+                }
               </td>
             </tr>
             <tr className="bg-gray-50">
@@ -155,7 +156,12 @@ const Bill = () => {
                 Service Charge:
               </td>
               <td className="px-6 py-4 font-semibold text-lg">
-                <p>{billDataOrder.total - (billDataOrder.total * 10) / 11}</p>
+                {/* Calculate the total order price */}
+                {
+                  (itemInfo.reduce((total, data) => {
+                    return total + data.price * data.quantity;
+                  }, 0) * 0.1).toFixed(2) // Reduce key word use for find Sum;
+                }
               </td>
             </tr>
             <tr className="bg-gray-50">
@@ -166,7 +172,11 @@ const Bill = () => {
                 Total Price:
               </td>
               <td className="px-6 py-4 font-semibold text-lg">
-                <p>{billDataOrder.total}</p>
+                <p>{
+                  (itemInfo.reduce((total, data) => {
+                    return total + data.price * data.quantity;
+                  }, 0) * 1.10).toFixed(2) // Reduce key word use for find Sum;
+                }</p>
               </td>
             </tr>
           </tfoot>
