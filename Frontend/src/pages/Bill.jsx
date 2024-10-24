@@ -120,9 +120,9 @@ const Bill = () => {
               >
                 <td className="px-6 py-4 text-gray-700">{data.name}</td>
                 <td className="px-6 py-4 text-gray-700">{data.price}</td>
-                <td className="px-6 py-4 text-gray-700">{data.quantity}</td>
+                <td className="px-6 py-4 text-gray-700">{data.totalQuantity}</td>
                 <td className="px-6 py-4 text-gray-700">
-                  {data.quantity * data.price}
+                  {data.totalQuantity * data.price}
                 </td>
               </tr>
             ))}
@@ -143,7 +143,7 @@ const Bill = () => {
                 {/* Calculate the total order price */}
                 {
                   itemInfo.reduce((total, data) => {
-                    return total + data.price * data.quantity;
+                    return total + data.price * data.totalQuantity;
                   }, 0).toFixed(2) // Reduce key word use for find Sum and toFixed(2) use to  fix two point of the answer;
                 }
               </td>
@@ -159,7 +159,7 @@ const Bill = () => {
                 {/* Calculate the total order price */}
                 {
                   (itemInfo.reduce((total, data) => {
-                    return total + data.price * data.quantity;
+                    return total + data.price * data.totalQuantity;
                   }, 0) * 0.1).toFixed(2) // Reduce key word use for find Sum;
                 }
               </td>
@@ -174,7 +174,7 @@ const Bill = () => {
               <td className="px-6 py-4 font-semibold text-lg">
                 <p>{
                   (itemInfo.reduce((total, data) => {
-                    return total + data.price * data.quantity;
+                    return total + data.price * data.totalQuantity;
                   }, 0) * 1.10).toFixed(2) // Reduce key word use for find Sum;
                 }</p>
               </td>
