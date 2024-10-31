@@ -13,8 +13,19 @@ check_state.get("/check_state/:mobile_no", (req, res) => {
 				console.log(err);
 				return;
 			}
+			const itemList = result.map((item) => ({
+				status: item.status,
+				orderID: item.orderID,
+			}));
+			const newStatus = itemList.map(item => item.orderID + item.status);
 			
-      res.json({result:result})
+			const updatedResult = result.map((item) => {
+				item.status = item.orderID + item.status;
+				return item;
+			});
+			
+			
+			res.json({ result: updatedResult });
 		});
 	} catch (err) {
 		console.log(err);

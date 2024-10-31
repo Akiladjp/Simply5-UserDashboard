@@ -146,7 +146,8 @@ const handleOrder = async (mobileno) => {
 						/>
 					))}
 				</div>
-				<div className="border-[2px] z-20 bottom-0 fixed w-full shadow-top rounded-t-3xl pt-8 pb-8 bg-white h-[240px] shadow-lg lg:w-[60%]">
+				<div className="border-[2px] z-20 bottom-0 fixed w-full shadow-top rounded-t-3xl pt-8 pb-8 bg-yellow-400 
+				 h-[240px] shadow-lg lg:w-[60%]">
 					<div className="flex justify-between mx-2 text-[18px] mb-3 font-bold">
 						<div>Order Price</div>
 						<div>{isNaN(totalPrice) ? "Rs. 0.0" : "Rs."+Math.round(totalPrice)}</div>

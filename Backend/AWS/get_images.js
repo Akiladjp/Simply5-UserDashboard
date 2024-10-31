@@ -3,7 +3,10 @@ import { GetObjectCommand } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 
 // Define your default image URL
+
+
 const DEFAULT_IMAGE_URL = "https://media.istockphoto.com/id/1396814518/vector/image-coming-soon-no-photo-no-thumbnail-image-available-vector-illustration.jpg?s=612x612&w=0&k=20&c=hnh2OZgQGhf0b46-J2z7aHbIWwq8HNlSDaNp2wn_iko=";
+
 
 export async function getImage(fileName) {
   try {
@@ -28,3 +31,21 @@ export async function getImage(fileName) {
     return { message: "Error", url: DEFAULT_IMAGE_URL };
   }
 }
+
+
+// =====================================================
+
+// export async function getImage(fileName) {
+//   try {
+//     const fileRef = ref(storage, `item_bucket/${fileName}`); // Update with your path if different
+//     const url = await getDownloadURL(fileRef);
+//     console.log("urll",url);
+//     return { message: "Success", url };
+
+//   } catch (error) {
+//     // Use the default image URL if an error occurs
+//     console.warn("Error getting image from Firebase Storage:", error);
+//     console.log("error url",url);
+//     return { message: "Error", url: DEFAULT_IMAGE_URL };
+//   }
+// }

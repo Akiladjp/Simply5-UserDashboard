@@ -11,6 +11,7 @@ billSection.get("/billSection/:mobileno", (req, res) => {
   const sql1 = `
     SELECT 
       i.name, 
+      o.orderID,
       SUM(c.quantity) AS totalQuantity, 
       i.price, 
       (SUM(c.quantity) * i.price) AS totalPrice,
@@ -36,6 +37,7 @@ billSection.get("/billSection/:mobileno", (req, res) => {
       return res.status(500).json({ message: "Error in billSection" });
     } else {
       if (result.length > 0) {
+        console.log(result);
         return res.json(result);
       } else {
         console.log("No orders found for this mobile number.");

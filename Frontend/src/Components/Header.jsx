@@ -36,56 +36,59 @@ export default function Header() {
 	const painpagestate = useSelector(selectMainpageState);
 	const count = useSelector(selectItemCount);
 	const mobile_no = useSelector(selectMobileno);
-
+	const [orderID, setOrderID] = useState([0]);
 	const [stateDetails, setStateDetails] = useState([]);
 	const prevStatus = useRef(null); // Store previous status
 
-	useEffect(() => {
-		// Load the previous status from localStorage on page load
-		prevStatus.current = localStorage.getItem("prevStatus");
-
-		const fetchData = async () => {
-			try {
-				const response = await axios.get(`${API_URL}/check_state/${mobile_no}`);
-				if (response) {
-					// console.log(response.data);
-					setStateDetails(response.data.result);
-				}
-			} catch (error) {
-				console.error("Error fetching data:", error);
+// Fetch state details and manage status updates
+useEffect(() => {
+	const fetchData = async () => {
+		try {
+			const response = await axios.get(`${API_URL}/check_state/${mobile_no}`);
+			if (response.data) {
+				const orderIDList = response.data.result.map((item) => item.orderID);
+				setOrderID(orderIDList);
+				setStateDetails(response.data.result);
 			}
-		};
-
-		// Fetch the data immediately
-		fetchData();
-
-		// Set an interval to refetch the data every 5 seconds (5000ms)
-		const intervalId = setInterval(fetchData, 5000); // Adjust the interval as needed
-
-		// Clear the interval when the component is unmounted
-		return () => clearInterval(intervalId);
-	}, [mobile_no]);
-
-	useEffect(() => {
-		if (stateDetails && stateDetails.length > 0) {
-			const currentStatus = stateDetails[0]["status"];
-
-			// Compare the new status with the previous one from localStorage
-			if (currentStatus !== prevStatus.current) {
-				// Only show toastr if this is not the first page load
-				if (prevStatus.current !== null) {
-					// if(currentStatus === "pending"){
-					// 	toastr.success('Order placed');
-					// }
-					toastr.success(currentStatus);
-				}
-
-				// Update previous status in useRef and localStorage
-				prevStatus.current = currentStatus;
-				localStorage.setItem("prevStatus", currentStatus);
-			}
+		} catch (error) {
+			console.error("Error fetching data:", error);
 		}
-	}, [stateDetails]);
+	};
+
+	fetchData();
+	const intervalId = setInterval(fetchData, 5000);
+
+	return () => clearInterval(intervalId);
+}, [mobile_no]);
+
+// Check for status updates to trigger toastr notifications
+useEffect(() => {
+	stateDetails.forEach((order) => {
+		const { orderID, status: currentStatus } = order;
+
+		// Retrieve the previous status from localStorage for each orderID
+		const prevStatus = localStorage.getItem(`${orderID}_prevStatus`);
+
+		// Check if the status has changed
+		if (currentStatus !== prevStatus) {
+			// Display notification for "pending" status
+			if (currentStatus.includes("pending")) {
+				toastr.success("Order placed successfully.");
+			} 
+			else if(localStorage.getItem("preStatus")){
+				
+				toastr.error("Your Order Can not Accept");
+				localStorage.removeItem("preStatus")
+			}
+			// Display notification for other statuses
+			else {
+				toastr.info(`Order ${orderID} status changed to: ${currentStatus}`);
+			}
+			// Update the previous status in localStorage
+			localStorage.setItem(`${orderID}_prevStatus`, currentStatus);
+		}
+	});
+}, [stateDetails]);
 
 	// console.log("stateDtails----------------", stateDtails["status"]);
 
