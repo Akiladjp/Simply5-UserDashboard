@@ -12,6 +12,7 @@ billSection.get("/billSection/:mobileno", (req, res) => {
     SELECT 
       i.name, 
       o.orderID,
+      o.status,
       SUM(c.quantity) AS totalQuantity, 
       i.price, 
       (SUM(c.quantity) * i.price) AS totalPrice,
@@ -26,10 +27,10 @@ billSection.get("/billSection/:mobileno", (req, res) => {
     JOIN 
       item i ON c.itemID = i.itemID
     WHERE 
-      o.mobileNo = ?
+      o.mobileNo = ? AND  o.status != "pending" OR o.status != "hidden"
     GROUP BY 
       i.name, i.price;
-  `;
+  `;3
 
   db.query(sql1, [mobileno, mobileno], (err, result) => {
     if (err) {

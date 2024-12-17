@@ -27,14 +27,14 @@ order_button.post("/create_order/:mobileno", (req, res) => {
 			"INSERT INTO contains(`orderID`, `itemID`, `quantity`) VALUES ?";
 		const values2 = items.map((item) => [orderId, item.itemID, item.quantity]);
 
-		db.query(sql2, [values2], (err) => {
+		db.query(sql2, [values2], (err, result) => {
 			if (err) {
 				console.error("Database error:", err);
 				return res
 					.status(500)
 					.json({ message: "Error adding items to order", error: err.message });
 			}
-
+			console.log(result);
 			// Third query to update `add_cart` table with state
 			const sql3 =
 				"UPDATE `add_cart` SET `state` = 'placeOrder' WHERE `mobileno` = ? AND `itemID` = ?";
@@ -48,7 +48,10 @@ order_button.post("/create_order/:mobileno", (req, res) => {
 						console.error("Database error:", err);
 						return res
 							.status(500)
-							.json({ message: "Error updating cart items", error: err.message });
+							.json({
+								message: "Error updating cart items",
+								error: err.message,
+							});
 					}
 					// Send response only after all updates are done
 					if (index === items.length - 1 && !errorOccurred) {
