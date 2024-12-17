@@ -18,9 +18,12 @@ const RatingPage = () => {
 	const [reaction, setReaction] = useState("");
 	const [feedbackValue, setFeedbackValue] = useState({ message: "" });
 	const [thank_Disappear, setThank_Disappear] = useState(false);
-
 	const [itemDetails, setItemDeails] = useState([]);
 
+	
+	const lastSegment = order_id.split("/").pop();
+	const OrderIDarray = lastSegment.split("-").map(Number); 
+	console.log(OrderIDarray);
 	const changeMainpagestate = () => {
 		dispatch(setMainpageState(false));
 	};
@@ -44,25 +47,34 @@ const RatingPage = () => {
 		};
 		fetchData();
 	}, []);
-	useEffect(() => {
-		const fetchData = async () => {
-			try {
-				const response = await axios.get(
-					` ${API_URL}/rating_getItem_details/${order_id}`
-				);
 
-				if (response.status === 200) {
-					setItemDeails(response.data.result);
-				} else {
-					console.log("Error: Unexpected response status", response.status);
-				}
-			} catch (err) {
-				console.log("Error in rating page when axios calling", err);
-			}
-		};
+useEffect(() => {
+  const fetchData = async () => {
+    try {
+      const responses = await Promise.all(
+        OrderIDarray.map(async (id) => {
+          const response = await axios.get(`${API_URL}/rating_getItem_details/${id}`);
+          if (response.status === 200) {
+            return response.data.result; // Return the data for this ID
+          } else {
+            console.log("Error: Unexpected response status", response.status);
+            return null; // Handle error cases
+          }
+        })
+      );
 
-		fetchData();
-	}, []);
+      // Combine all responses into one array (filter out nulls if needed)
+      const allItemDetails = responses.filter((item) => item !== null);
+			console.log(allItemDetails);
+      setItemDeails(allItemDetails);
+    } catch (err) {
+      console.log("Error in rating page when axios calling", err);
+    }
+  };
+
+  fetchData();
+}, []);
+
 
 	const handleReaction = (event) => {
 		event.preventDefault(); // Prevent page refresh
@@ -122,23 +134,25 @@ const RatingPage = () => {
 				<div className=" flex flex-col  h-full overflow-scroll w-full">
 					<div className="flex justify-center gap-x-8 flex-wrap w-full  h-auto flex-col md:flex-row  ">
 						{itemDetails && itemDetails.length !== 0 ? (
-							itemDetails.map((item, index) => (
-								<div key={index} className="gap-x-2">
-									<Rating
-										order_ID={order_id}
-										itemID={item.itemID}
-										name={item.name}
-										imageUrl={item.imageUrl["url"]}
-										rate={item.rate}
-										Pre_count={item.number_of_reviewer}
-									/>
-								</div>
-							))
-						) : (
-							<div className="bg-red-400 w-full h-full ">
-								<span></span>
-							</div>
-						)}
+  itemDetails.map((innerArray, index) => (
+    innerArray.map((item) => (
+      <div key={item.itemID} className="gap-x-2">
+        <Rating
+          order_ID={order_id}
+          itemID={item.itemID}
+          name={item.name}
+          imageUrl={item.imageUrl?.url}
+          rate={item.rate}
+          Pre_count={item.number_of_reviewer}
+        />
+      </div>
+		
+    ))
+  ))
+) : (
+  <p>No items found</p>
+)}
+
 					</div>
 					<div className="w-full h-auto md:w-[80%] md:m-auto ">
 						<form onSubmit={handleSubmit}>

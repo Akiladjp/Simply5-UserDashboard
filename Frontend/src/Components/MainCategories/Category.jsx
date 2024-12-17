@@ -48,7 +48,7 @@ export default function Category() {
     <div className="w-full   top-[50px]  h-auto pb-2">
       <ScrollToTop/>
     
-      <div className={`${buttonState?' blur-md flex items-center justify-around h-auto py-2 mt-8 flex flex-wrap items-center justify-center gap-8 mt-4':'flex flex-wrap items-center justify-center gap-8 mt-4'}`}>
+      <div className={`${buttonState?' blur-md  h-screen overflow-hidden items-center   py-2  flex flex-wrap  justify-center gap-8 mt-4':'flex flex-wrap items-center justify-center gap-8 mt-4'}`}>
       {Mealitems.length > 0 &&
           Mealitems.map((item, index) => (
             <>

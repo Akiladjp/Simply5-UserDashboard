@@ -27,7 +27,7 @@ const PopOrder = () => {
     itemID: "",
     quantity: 0,
   });
-
+console.log(preValue);
   useEffect(() => {
     if (!isalready) {
       console.log("not already");
@@ -38,11 +38,13 @@ const PopOrder = () => {
       });
     } else if (preValue.length > 0) {
       console.log("in effect already", preValue[0].quantity);
+      console.log(preValue[0].quantity);
       setCount(preValue[0].quantity);
     }
     
   }, [addcount, isalready, mobileno, getitemID, count, preValue]);
 
+  
   useEffect(() => {
     const fetchData = async () => {
       try {

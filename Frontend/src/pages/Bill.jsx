@@ -18,6 +18,7 @@ const Bill = () => {
 	}, []);
 
 	const mobileno = useSelector(selectMobileno);
+	
 
 	const [currentDate, setCurrentDate] = useState(
 		new Date().toLocaleDateString()
@@ -39,6 +40,9 @@ const Bill = () => {
 	console.log(billDataOrder);
 	const [itemInfo, setItemInfo] = useState([]);
 
+	const [BillNumbers, setBillNumbers] = useState([]);
+	const [billNumbers, setBillNumber] = useState("");
+	
 	useEffect(() => {
 		const fetchData = async () => {
 			console.log(mobileno);
@@ -46,14 +50,29 @@ const Bill = () => {
 				const response = await axios.get(`${API_URL}/billSection/${mobileno}`);
 				if (response) {
 					let length = response.data.length - 1;
-
+	
 					const order = response.data[length];
 					setBillDataOrder({
 						billNo: order.orderID || "null",
 						time: order.time || "null",
 						total: order.total || "null",
 					});
-
+	
+					const updatedBillNumbers = [...BillNumbers]; // Create a copy to modify
+					for (let i = 0; i < response.data.length; i++) {
+						let order = response.data[i];
+						if (!updatedBillNumbers.includes(order.orderID)) {
+							updatedBillNumbers.push(order.orderID); // Add only if it doesn't exist
+						}
+					}
+	
+					setBillNumbers(updatedBillNumbers); // Update state
+	
+					const text = updatedBillNumbers.join("-"); // Use join to create the text
+					setBillNumber(text);
+	
+					console.log(updatedBillNumbers); // Updated BillNumbers
+					console.log(text); // String version
 					setItemInfo(response.data);
 				} else {
 					console.log("Error in query");
@@ -62,10 +81,13 @@ const Bill = () => {
 				console.log("Error in fetching data", err);
 			}
 		};
-
+	
 		fetchData();
-	}, [mobileno]);
-
+	}, [mobileno]); // Add BillNumbers as a dependency if needed
+	
+	useEffect(() => {
+		console.log(BillNumbers);
+	}, []);
 	return (
 		<div className="scale-90 flex flex-col items-center w-full p-6 bg-gray-100 lg:w-3/5 lg:m-auto">
 			{/* Header Section */}
@@ -195,7 +217,7 @@ const Bill = () => {
 					<h3 className="text-lg font-bold text-gray-800 mb-4">
 						Give your valuable feedback
 					</h3>
-					<Link to={`/ratingpage/${billDataOrder["billNo"]}`}>
+					<Link to={`/ratingpage/${billNumbers}`}>
 						<button className="bg-red-600 hover:bg-red-700 text-white font-semibold rounded-lg py-2 px-8 shadow-md transition-transform transform hover:scale-105">
 							Click Here
 						</button>

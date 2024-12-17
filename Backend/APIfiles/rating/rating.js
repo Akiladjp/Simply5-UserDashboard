@@ -63,7 +63,7 @@ rating.put("/rating_updateRate", (req, res) => {
 rating.get("/rating_getItem_details/:order_id", async (req, res) => {
 	try {
 		const order_id = req.params.order_id;
-
+		console.log(order_id);
 		const sql = "SELECT `itemID` FROM contains WHERE orderID = ? ";
 		db.query(sql, [order_id], async (err, idList) => {
 			if (err) {
@@ -140,6 +140,7 @@ rating.get("/rating_getItem_details/:order_id", async (req, res) => {
 					);
 
 					// Send the final result after all queries are completed
+					console.log(finalresult);
 					return res.json({ result: finalresult });
 				} catch (error) {
 					console.log("Error in Promise.all", error);
@@ -211,7 +212,7 @@ rating.get("/feedback_rating/:mobileNo", (req, res) => {
 											const isAdded = result.some(
 												(row) => row.feedback_state === "ADDED"
 											);
-											console.log(isAdded)
+											console.log(isAdded);
 
 											if (isAdded) {
 												console.log(
