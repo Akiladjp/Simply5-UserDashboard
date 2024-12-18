@@ -120,7 +120,7 @@ add_cart.post("/add_cart", async (req, res) => {
 					console.log("databaase quantity", result[0].quantity);
 					if (result.quantity != req.body.quantity) {
 						const sql2 =
-							"UPDATE add_cart SET quantity = ? WHERE mobileno = ? AND itemID = ?";
+							"UPDATE add_cart SET quantity = ? WHERE mobileno = ? AND itemID = ? " ;
 
 						console.log("update value", req.body.quantity);
 						db.query(
@@ -147,9 +147,9 @@ add_cart.get("/get_cartValues", async (req, res) => {
 	try {
 		const add_cart_item_id = [];
 		const add_cart_item_quanity = [];
-		const sqlID = "SELECT * FROM add_cart WHERE mobileno=? AND date=?  ";
+		const sqlID = "SELECT * FROM add_cart WHERE mobileno=? AND date=? AND state =? ";
 
-		db.query(sqlID, [mobileno, date], async (err, result_id) => {
+		db.query(sqlID, [mobileno, date,"add"], async (err, result_id) => {
 			if (err) {
 				console.log(err);
 				return res.json({ message: "Error in getting itemid from addcart" });

@@ -5,6 +5,7 @@ import ScrollToTop from "./ScrollTop.jsx";
 import { useEffect, useState } from "react";
 import { setMainpageState } from "../Redux/Slices/MainPageSilce.js";
 import axios from "axios";
+
 import { selectMobileno } from "../Redux/Slices/AuthSlice.js";
 import {
 	selectCheckCount,
@@ -45,6 +46,7 @@ export default function Cart() {
 					`${API_URL}/get_cartValues?mobileno=${mobileno}`
 				);
 				if (response && response.data.result) {
+					console.log(response.data.result);
 					setCartValues({
 						result: response.data.result,
 						add_cart_item_quanity: response.data.add_cart_item_quanity,
@@ -96,6 +98,7 @@ export default function Cart() {
 	const navigate = useNavigate();
 console.log(totalPrice)
 const handleOrder = async (mobileno) => {
+	console.log("handle orde work");
   try {
     // Ensure totalPrice is greater than zero
     if (totalPrice > 0) {
@@ -119,6 +122,8 @@ const handleOrder = async (mobileno) => {
       // Navigate to the bill page after successful order
       navigate("/bill");
     } else {
+			toastr.warning("Please add items to your cart before placing an order.");
+
       console.log("Please ensure the total price is greater than zero.");
     }
   } catch (err) {
@@ -173,12 +178,13 @@ const handleOrder = async (mobileno) => {
 							</button>
 						</Link>
 						<Link>
-							<button
-								className="bg-[#28A745] py-1 w-20 rounded-md shadow-lg my-2 text-white uppercase font-bold :"
-								
-								onClick={() => handleOrder(mobileno)}>
-								order
-							</button>
+						<button
+  className="bg-[#28A745] py-1 w-20 rounded-md shadow-lg my-2 text-white uppercase font-bold"
+  onClick={() => setCartValues ? handleOrder(mobileno) : toastr.warning("please add item to cart")}
+>
+  Order
+</button>
+
 						</Link>
 					</div>
 				</div>

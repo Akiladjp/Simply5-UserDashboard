@@ -6,7 +6,7 @@ const service = express.Router();
 service.post("/add_service/:empID", (req, res) => {
 	const comment = req.body["message"];
 	const empID = req.params.empID;
-	console.log(empID);
+	console.log("empID - in add services",empID);
 	const today = new Date();
 	
 	const offset = today.getTimezoneOffset(); // Get the time zone offset in minutes
@@ -18,7 +18,7 @@ service.post("/add_service/:empID", (req, res) => {
 	);
 
 	const date = adjustedDate.toISOString().split("T")[0];
-	console.log(date); // Outputs: "YYYY-MM-DD"
+	console.log("date in add services",date); // Outputs: "YYYY-MM-DD"
 	try {
 		const sql = "INSERT INTO service (empID,date,comment) VALUES (?,?,?)  ";
 		db.query(sql, [empID, date, comment], (err, result) => {
