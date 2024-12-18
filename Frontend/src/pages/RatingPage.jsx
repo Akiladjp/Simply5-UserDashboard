@@ -232,7 +232,7 @@ useEffect(() => {
 				<div
 					className={
 						thank_Disappear
-							? "w-full h-screen bg-fuchsia-400 absolute flex items-center justify-center bottom-2 left-2"
+							? "w-full h-screen bg-white absolute flex items-center justify-center bottom-2 left-2"
 							: "hidden"
 					}>
 					<span className="text-2xl w-full text-center">
