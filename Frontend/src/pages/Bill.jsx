@@ -37,6 +37,7 @@ const Bill = () => {
 		time: "",
 		total: "",
 	});
+	
 	console.log(billDataOrder);
 	const [itemInfo, setItemInfo] = useState([]);
 

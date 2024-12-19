@@ -129,7 +129,7 @@ export default function ItemCart({
 						<i className="text-green-700">
 							<AccessAlarmsIcon fontSize="small" />
 						</i>
-						<p className="text-[12px] text-green-700">{time}</p>
+						<p className="text-[12px] text-green-700">{time} min</p>
 					</div>
 					<div className="flex items-end justify-center gap-1">
 						<i className="text-red-700">

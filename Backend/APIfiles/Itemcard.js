@@ -24,7 +24,6 @@ itemcard.get("/itemcard", async (req, res) => {
       for (var i = 0; i < maxItems; i++) {
         //console.log(ans[i].name, ",");
 
-     
         const imageUrl = await getImage(ans[i].image_link);
         result.push({
           ...ans[i],

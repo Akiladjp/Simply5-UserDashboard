@@ -72,7 +72,7 @@ const Rating = (props) => {
     }
   };
 
-  const hanleDesapear = () => {
+  const handleDisapear = () => {
     if (rating != null) {
       setIsDone(true);
     }
@@ -80,7 +80,7 @@ const Rating = (props) => {
 
   return (
     <>
-      <div className=" justify-center w-full scale-75 md:scale-90 flex-col">
+      <div className="justify-center w-full scale-75 md:scale-90 flex-col">
         <div
           className={`${
             isDone
@@ -138,7 +138,7 @@ const Rating = (props) => {
                     type="submit"
                     className="px-2 py-1 font-bold bg-green-500 rounded-lg"
                     onClick={() => {
-                      hanleDesapear();
+                      handleDisapear();
                     }}
                   >
                     Submit
