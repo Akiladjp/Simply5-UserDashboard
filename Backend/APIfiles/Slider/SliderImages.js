@@ -22,7 +22,7 @@ sliderUpload.get("/slider", async (req, res) => {
             image_url: imageUrl.url,
           });
         }
-        console.log(offerBanner);
+        
   
         return res.json({ offerBanner });
       });

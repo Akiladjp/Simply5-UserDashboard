@@ -13,6 +13,7 @@ console.log(mobileno);
       i.name, 
       o.orderID,
       o.status,
+      o.time,
       SUM(c.quantity) AS totalQuantity, 
       i.price, 
       (SUM(c.quantity) * i.price) AS totalPrice,

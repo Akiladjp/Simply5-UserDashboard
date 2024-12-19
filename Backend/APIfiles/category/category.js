@@ -9,7 +9,7 @@ category.get("/category", async (req, res) => {
 	const categoryParam = req.query.category;
 
 	try {
-		const sql = "SELECT * FROM item WHERE category =? ";
+		const sql = "SELECT * FROM item WHERE category =? AND available ='AVAILABLE' ";
 
 		db.query(sql, [categoryParam], async (err, ans) => {
 			if (err) return res.json({ Message: "Error inside server" });

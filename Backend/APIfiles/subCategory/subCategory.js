@@ -44,7 +44,7 @@ subcategory.get("/subcategoryitems", async (req, res) => {
   const categoryParam = req.query.category;
 
   try {
-    const sql = "SELECT * FROM item WHERE sub_category =? ";
+    const sql = "SELECT * FROM item WHERE sub_category =? AND available ='AVAILABLE' ";
 
     db.query(sql,[categoryParam], async (err, ans) => {
       if (err) return res.json({ Message: "Error inside server" });

@@ -26,7 +26,9 @@ order_button.post("/create_order/:mobileno", (req, res) => {
 		const sql2 =
 			"INSERT INTO contains(`orderID`, `itemID`, `quantity`) VALUES ?";
 		const values2 = items.map((item) => [orderId, item.itemID, item.quantity]);
-
+		const time = items.map((item) => [item.quantity]);
+		console.log(time);
+		console.log("item in before ordering", values2);
 		db.query(sql2, [values2], (err, result) => {
 			if (err) {
 				console.error("Database error:", err);
@@ -46,12 +48,10 @@ order_button.post("/create_order/:mobileno", (req, res) => {
 					if (err && !errorOccurred) {
 						errorOccurred = true;
 						console.error("Database error:", err);
-						return res
-							.status(500)
-							.json({
-								message: "Error updating cart items",
-								error: err.message,
-							});
+						return res.status(500).json({
+							message: "Error updating cart items",
+							error: err.message,
+						});
 					}
 					// Send response only after all updates are done
 					if (index === items.length - 1 && !errorOccurred) {

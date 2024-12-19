@@ -50,6 +50,7 @@ export default function Cart() {
 					setCartValues({
 						result: response.data.result,
 						add_cart_item_quanity: response.data.add_cart_item_quanity,
+						add_cart_item_time:response.data.add_cart_item_time
 					});
 				} else if (response.data.message === "err") {
 					console.log(response.data.message);
@@ -97,8 +98,8 @@ export default function Cart() {
 
 	const navigate = useNavigate();
 console.log(totalPrice)
+console.log("cartValues",cartValues);
 const handleOrder = async (mobileno) => {
-	console.log("handle orde work");
   try {
     // Ensure totalPrice is greater than zero
     if (totalPrice > 0) {
@@ -113,6 +114,7 @@ const handleOrder = async (mobileno) => {
         items: cartValues.result.map((cart, index) => ({
           itemID: cart.itemID,
           quantity: cartValues.add_cart_item_quanity[index],
+          time: cartValues.add_cart_item_time[index],
         })),
       };
 
