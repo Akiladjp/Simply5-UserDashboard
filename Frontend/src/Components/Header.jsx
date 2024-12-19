@@ -82,7 +82,26 @@ useEffect(() => {
 			}
 			// Display notification for other statuses
 			else {
-				toastr.info(`Order ${orderID} status changed to: ${currentStatus}`);
+				//  toastr.info(`Order ${orderID} status changed to: ${currentStatus}`);
+
+				if(currentStatus===`${orderID}accept`){
+					toastr.success("YOUR ORDER ACCEPTED !");
+					setTimeout(() => {
+						window.location.reload();
+					}, 3000); 
+					
+				}
+				else if(currentStatus===`${orderID}delivered`){
+					toastr.success("YOUR ORDER DELIVERED ! ENJOY MEAL ", {"font-size": "20px"});
+				}
+				else if(currentStatus===`${orderID}reject`){
+					toastr.error("YOUR ORDER REJECT ! PLEASE PLACE NEW ORDER ", {"font-size": "20px"});
+					setTimeout(() => {
+						navigate('/')
+					}, 3000); 
+				}
+			
+				
 			}
 			// Update the previous status in localStorage
 			localStorage.setItem(`${orderID}_prevStatus`, currentStatus);

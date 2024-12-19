@@ -7,7 +7,7 @@ check_state.get("/check_state/:mobile_no", (req, res) => {
 	const mobile_no = req.params.mobile_no;
 	// console.log("mobile_no", mobile_no);
 	try {
-		const sql = "SELECT * FROM orders WHERE `mobileNO`=? AND status !='hidden'";
+		const sql = "SELECT * FROM orders WHERE `mobileNO`=?";
 		db.query(sql, [mobile_no], (err, result) => {
 			if (err) {
 				console.log(err);
