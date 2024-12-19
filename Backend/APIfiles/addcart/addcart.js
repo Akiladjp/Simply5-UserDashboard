@@ -90,7 +90,12 @@ add_cart.post("/add_cart", async (req, res) => {
 			async (err, result) => {
 				if (err) {
 					console.log("error in checking item in addcart", err);
-				} else if (result.length === 0) {
+					return res.json({ message: "error in checking item in addcart" });
+				}
+				// new data
+				else if (result.length === 0) {
+					console.log("case1");
+
 					console.log(result);
 					console.log("result length", result.length);
 					console.log("this is new item to cart");
@@ -103,34 +108,141 @@ add_cart.post("/add_cart", async (req, res) => {
 						req.body.quantity,
 						"add",
 						date,
-            timeInColombo
+						timeInColombo,
 					];
 
 					db.query(sql, values, async (err, result) => {
 						if (err) {
+							console.log("Error while inserting new item:", err);
 							return res.json({ message: "err" });
 						} else {
 							console.log(result);
-
 							return res.json({ message: "result" });
 						}
 					});
-				} else {
-					console.log("this is already in  cart");
-					console.log("databaase quantity", result[0].quantity);
+				}
+				// that item already in addCart
+				else {
+					console.log("this is already in cart");
+					console.log("database quantity", result[0].quantity);
 					if (result.quantity != req.body.quantity) {
-						const sql2 =
-							"UPDATE add_cart SET quantity = ? WHERE mobileno = ? AND itemID = ? " ;
+						console.log("case2");
 
-						console.log("update value", req.body.quantity);
+						const check_state_sql =
+							"SELECT state FROM add_cart WHERE mobileno = ? AND itemID = ?";
+
 						db.query(
-							sql2,
-							[req.body.quantity, req.body.mobileno, req.body.itemID],
-							async (err, result) => {
+							check_state_sql,
+							[req.body.mobileno, req.body.itemID],
+							(err, result) => {
 								if (err) {
-									console.log("error in updating quantity");
-								} else {
-									console.log("quanity update successfully");
+									console.log("error on checking state sql", err);
+									return res.json({
+										message: "error on checking state sql",
+									});
+
+								} 
+								else {
+									console.log(result);
+									const check_state = result.map((item)=>(item.state))
+									console.log("check_state",check_state);
+									// console.log("in check state", result[0]["state"]);
+
+									if (result[0]["state"] != "add") {
+										console.log("case3");
+
+										const check_state_sql =
+											"SELECT state FROM add_cart WHERE mobileno = ? AND itemID = ?";
+										// add_cart has more than one item relevant to the same itemID both placeOrder and add
+										db.query(
+											check_state_sql,
+											[req.body.mobileno, req.body.itemID],
+											(err, result) => {
+												if (err) {
+													console.log(err);
+													return res.json({
+														message: "error in nested check_state_sql",
+													});
+												} else {
+													const state = result.map((item) => item.state);
+
+													console.log(state);
+													for (var i = 0; i < state.length; i++) {
+														if (result[i]["state"] == "add") {
+															console.log("case4");
+
+															console.log("this this this this");
+															const sql2 =
+																"UPDATE add_cart SET quantity = ? WHERE mobileno = ? AND itemID = ?";
+															console.log(
+																"update value in already placeOrder",
+																req.body.quantity
+															);
+															db.query(
+																sql2,
+																[
+																	req.body.quantity,
+																	req.body.mobileno,
+																	req.body.itemID,
+																],
+																async (err, result) => {
+																	if (err) {
+																		console.log("error in updating quantity");
+																		return res.json({
+																			message: "update error",
+																		});
+																	} else {
+																		console.log(
+																			"quantity updated successfully"
+																		);
+																		return res.json({
+																			message: "quantity update success",
+																		});
+																	}
+																}
+															);
+															break;
+														} else {
+															if(i==state.length-1){
+
+																console.log("case5");
+																
+																const sql =
+																"INSERT INTO add_cart (`mobileno`, `itemID`, `quantity`,`state`,`date`,`time`) VALUES (?,?,?,?,?,?)";
+																
+																const values = [
+																	req.body.mobileno,
+																	req.body.itemID,
+																	req.body.quantity,
+																	"add",
+																	date,
+																	timeInColombo,
+																];
+																
+																db.query(sql, values, async (err, result) => {
+																	if (err) {
+																		console.log("Insert error", err);
+																		return res.json({
+																			message: "err",
+																		});
+																	} else {
+																		console.log(
+																			"item added to cart successfully",
+																			result
+																		);
+																		return res.json({
+																			message: "result",
+																		});
+																	}
+																});
+															}
+															
+														}
+													}
+												}
+											}
+										);
+									}
 								}
 							}
 						);
@@ -138,7 +250,10 @@ add_cart.post("/add_cart", async (req, res) => {
 				}
 			}
 		);
-	} catch (err) {}
+	} catch (err) {
+		console.log("server error", err);
+		res.json({ message: "server error" });
+	}
 });
 
 add_cart.get("/get_cartValues", async (req, res) => {
@@ -147,9 +262,11 @@ add_cart.get("/get_cartValues", async (req, res) => {
 	try {
 		const add_cart_item_id = [];
 		const add_cart_item_quanity = [];
-		const sqlID = "SELECT * FROM add_cart WHERE mobileno=? AND date=? AND state =? ";
+		const add_cart_item_time = [];
+		const sqlID =
+			"SELECT * FROM add_cart WHERE mobileno=? AND date=? AND state =? ";
 
-		db.query(sqlID, [mobileno, date,"add"], async (err, result_id) => {
+		db.query(sqlID, [mobileno, date, "add"], async (err, result_id) => {
 			if (err) {
 				console.log(err);
 				return res.json({ message: "Error in getting itemid from addcart" });
@@ -160,6 +277,7 @@ add_cart.get("/get_cartValues", async (req, res) => {
 			for (let j = 0; j < result_id.length; j++) {
 				add_cart_item_id.push(result_id[j]["itemID"]);
 				add_cart_item_quanity.push(result_id[j]["quantity"]);
+				add_cart_item_time.push(result_id[j]["time"]);
 				const cartid = result_id[j]["itemID"];
 
 				const sql = "SELECT * FROM item WHERE itemID = ?";
@@ -184,8 +302,8 @@ add_cart.get("/get_cartValues", async (req, res) => {
 					});
 				}
 			}
-			console.log(result, "add_cart_item_quanity");
-			return res.json({ result, add_cart_item_quanity });
+			console.log(result, add_cart_item_time, "add_cart_item_quanity");
+			return res.json({ result, add_cart_item_quanity, add_cart_item_time });
 		});
 	} catch (error) {
 		console.log(error);
@@ -195,8 +313,8 @@ add_cart.get("/get_cartValues", async (req, res) => {
 
 add_cart.delete("/addcart/removeitem_from_cart", async (req, res) => {
 	try {
-		const sql = "DELETE FROM add_cart WHERE itemID = ?";
-		db.query(sql, [req.body.itemid], (err, result) => {
+		const sql = "DELETE FROM add_cart WHERE itemID = ? AND state =?";
+		db.query(sql, [req.body.itemid,"add"], (err, result) => {
 			if (err) {
 				console.error("Error in delete query", err);
 				return res.status(500).json({ message: "err" });
