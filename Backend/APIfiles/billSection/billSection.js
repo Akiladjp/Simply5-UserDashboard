@@ -28,7 +28,7 @@ console.log(mobileno);
     JOIN 
       item i ON c.itemID = i.itemID
     WHERE 
-      o.mobileNo = ? AND o.status ="delivered" OR o.status="paid"
+      o.mobileNo = ? AND o.status ="delivered" OR o.status="paid" OR o.status="accept"
     GROUP BY 
       i.name, i.price;
   `;
